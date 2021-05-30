@@ -1,7 +1,8 @@
 # Chapter 7
 
+### 예제 07-06
+
 ```javascript
-//예제07-06
 var x = "1";
 
 // 문자열을 숫자로 타입 변환함
@@ -26,8 +27,11 @@ x = "hello";
 console.log(+x); //NaN
 //부수효과 없음
 console.log(x); //'hello'
+```
 
-//예제 07-07
+### 예제 07-07
+
+```javascript
 //부호를 반전한 값을 생성해 반환한다.
 -(-10); //10
 
@@ -39,8 +43,11 @@ console.log(x); //'hello'
 
 //문자열은 숫자로 타입 변환 불가능
 -"Hello"; // NaN
+```
 
-// 예제07-08
+### 예제07-08
+
+```javascript
 //문자열 연결 연산자
 "1" + 2; // '12'
 1 + "2"; // '12
@@ -59,8 +66,11 @@ console.log(x); //'hello'
 
 //undefined는 숫로로 타입 변환 불가능
 1 + undefined; // NaN
+```
 
-// 예제07-15
+### 예제07-15
+
+```javascript
 // NaN은 자신과 일치하지 않는 유일한 값이다.
 NaN === NaN; // false
 
@@ -76,8 +86,11 @@ Object.is(-0, +0); //false
 
 NaN === NaN; // false
 Object.is(NaN, NaN); //true
+```
 
-// 예제07-34
+### 예제07-34
+
+```javascript
 2 ** 2; // 4
 2 ** 2.5; // 5.65685424
 2 ** 0; //1

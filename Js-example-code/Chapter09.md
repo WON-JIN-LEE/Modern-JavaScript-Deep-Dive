@@ -1,0 +1,396 @@
+# Chapter 9
+
+## 9.2암묵적 타입 변환
+
+### 9.2.1 문자열 타입으로 변환
+
+    - +연산자는 피연산자 중 하나 이상이 문자열이므로 문자열 연결 연산자로 동작한다.
+    - 문자열 연결 연산자( + )의 역할은 문자열 값을 만드는 것이다. 따라서 문자열 연결 연산자의 모든 피연산자는 코드의 문맥상 모두 문자열 타입이어야한다.
+
+### 예제09-06
+
+```javascript
+// 숫자 타입
+0 + ''                  //"0"
+- 0 + ''                //"0"
+1 + ''                  //"1"
+- 1 + ''                //"-1"
+NaN + ''                //"NaN "
+Infinity + ''           //"Infinity"
+- Infinity + ''         //"- Infinity "
+
+// 불리언 타입
+true + ''               //"true"
+false + ''              //"false"
+
+// null 타입
+null + ''               //"null"
+
+// undefined 타입
+undefined + ''          //"undefined"
+
+// 심벌타입
+(Symbol()) + ''         //"TypeError : Cannot convert a Symbol value to a string"
+
+// 객체 타입
+({}) + ''               //"[object Object"
+Math + ''               //"object Math"
+[ ] + ''                 //""
+[10, 20] + ''           //"10, 20"
+(function () { }) + ''  //"function () { }"
+Array + ''              //"function Array() {[native code]}"
+```
+
+### 9.2.2 숫자 타입으로 변환
+
+    - 산술 연산자( *, / , - )의 역할은 숫자 값을 만드는 것이다. 따라서 산술 연산자의 모든 피연산자는 모두 숫자 타입으로 암묵적 타입 변환한다.
+    - 피연산자를 숫자 타입으로 변환할 수 없는 경우는 산술연산이 불가능 하므로 표현식의 평가 결과는 NaN이 된다.
+    - 비교 연산자는 피연산자의 크기를 비교하므로 모든 피연산자는 코드의 문맥상 모두 숫자 타입이어야 한다.
+    - 빈 문자열(' ') , 빈 배열([ ] ), null, false는 0으로, true는 1로 변환된다. 객체와 빈 배열이 아닌 undefined는 변환되지 않아 NaN이 된다는 것에 주의하자
+
+### 예제09-09
+
+```javascript
+// 문자열 타입
++"" + //0
+  "0" + //0
+  "1" + //1
+  "string" + //NaN
+  // 불리언 타입
+  true + //1
+  false + //0
+  // null 타입
+  null + //0
+  // undefined 타입
+  undefined + //NaN
+  // 심벌타입
+  Symbol() + //"TypeError : Cannot convert a Symbol value to a string"
+  // 객체 타입
+  {} + //NaN
+  [] + //0
+  [10, 20] + //NaN
+  function () {}; //NaN
+```
+
+### 9.2.3 불리언 타입으로 변환
+
+    - 자바스크립트 엔진은 불리언 타입이 아닌 값을 Truthy값 또는 Falsy 값으로 구분한다.
+    - Truthy는 true로, Falsy값은 false로 암묵적 타입 변환된다.
+    - Falsy 값은 : false, undefined, null, 0, -0, NaN, ' '(빈 문자열)
+    - Falsy값 외의 모든 값은 모두 true로 평가되는 Truthy값이다.
+
+### 예제09-13
+
+```javascript
+// 전달받은 인수가 Falsy 값이면 true, Truthy값이면 false를 반환한다.
+function isFalsy(v) {
+  return !v;
+}
+
+// 전달받은 인수가 Truthy 값이면 true, Falsy값이면 false를 반환한다.
+function isFalsy(v) {
+  return !!v;
+}
+
+// 모두 true를 반환한다.
+isFalsy(false);
+isFalsy(undefined);
+isFalsy(null);
+isFalsy(0);
+isFalsy(NaN);
+isFalsy(" ");
+
+// 모두 true를 반환한다.
+isTruthy(true);
+isTruthy("0"); //빈 문자열이 아닌 문자열은 Truthy 값이다.
+isTruthy({});
+isTruthy([]);
+```
+
+## 9.3 명시적 타입 변환
+
+### 9.3.1 문자열 타입으로 변환
+
+    - String  생성자 함수를 new연산자 없이 호출
+    - Object.prototype.toString 메서드를 사용하는 방법
+    - 문자열 연결 연산자를 이용하는 방법
+
+### 예제09-14
+
+```javascript
+// 1.String 생성자 함수를 new연산자 없이 호출하는 방법
+// 숫자 타입 => 문자열 타입
+String(1); // "1"
+String(NaN); //"NaN"
+String(Infinity); //"Infinity"
+
+// 불리언 타입 => 문자열 타입
+String(true); //"true"
+String(false); //"false"
+
+// 2.Object.prototype.toString 메서드를 사용하는 방법
+// 숫자 타입 => 문자열 타입
+(1).toString(); // "1"
+NaN.toString(); //"NaN"
+Infinity.toString(); //Infinity
+// 불리언 타입 => 문자열 타입
+true.toString(); //"true"
+false.toString(); //"false"
+
+// 3.문자열 연결 연산자를 이용하는 방법
+// 숫자 타입 => 문자열 타입
+1 + ""; // "1"
+NaN + ""; // "NaN"
+Infinity + ""; // "Infinity"
+// 불리언 타입 => 문자열 타입
+true + ""; // "true"
+false + ""; // "false"
+```
+
+### 9.3.2 숫자 타입으로 변환
+
+    - Number 생성자 함수를 new연산자없이 호출
+    - parseInt, parseFloat 함수를 사용하는 방법( 문자열만 숫자 타입으로 변환가능)
+    - +단항 산술 연산자를 이용하는 방법
+    -  *  산술연산자를 이용하는 방법
+
+### 예제09-15
+
+```javascript
+// 1.Number 생성자 함수를 new연산자 없이 호출하는 방법
+// 문자열 타입 => 숫자 타입
+Number(1); // 0
+Number(NaN); // -1
+Number(Infinity); //10.53
+
+// 불리언 타입 => 문자열 타입
+Number(true); //1
+Number(false); //0
+
+// 2. parseInt, parseFloat 힘슬,ㄹ 시용하는 방법(문자열만 변환 가능)
+// 문자열 타입 => 숫자 타입
+parseInt("0"); // "1"
+parseInt("-1"); //"NaN"
+parseInt("10.53"); //Infinity
+
+//3. +단항 산술 연산자를 이용하는 방법
+// 문자열타입 => 숫자 타입
++"0"; // 0
++"-1"; // -1
++"10.53"; // 10.53
+
+// 불리언 타입 => 숫자 타입
++true + //1
+  false; //0
+
+//4. *산술 연산자를 이용하는 방법
+"0" * 1; //0
+"-1" + 1; //-1
+"10.53" * 1; //10.53
+// 불리언 타입 => 숫자 타입
+true * 1; //1
+false * 1; //0
+```
+
+### 9.3.3 불리언 타입으로 변환
+
+    - Boolean생성자 함수를 new연산자 없이 호출하는 방법
+    - ! 부정 논리 연산자를 두 번 사용하는 방법
+
+### 예제 09-16
+
+```javascript
+// 1. Boolean 생성자 함수를 new연산자 없이 호출하는 방법
+//  문자열 타입 => 불리언 타입
+Boolean("x"); // true
+Boolean(""); // false
+Boolean("false"); // true
+//  숫자 타입 => 불리언 타입
+Boolean(0); // false
+Boolean(1); // true
+Boolean(NaN); // false
+Boolean(Infinity); // true
+//  null 타입 => 불리언 타입
+Boolean(null); // false
+//  undefined 타입 => 불리언 타입
+Boolean(undefined); // false
+//  객체 타입 => 불리언 타입
+Boolean({}); // true
+Boolean([]); // true
+
+// 2. ! 부정 논리 연산자를 두번 사용하는 방법
+// 문자열 타입 => 불리언 타입
+!!"x"; // true
+!!""; // false
+!!"false"; // true
+// 숫자 타입 => 불리언 타입
+!!0; // false
+!!1; // true
+!!NaN; // false
+!!Infinity; // true
+// null 타입 => 불리언 타입
+!!null; // false
+// undefined 타입 => 불리언 타입
+!!undefined; // false
+// 객체 타입 => 불리언 타입
+!!{}; // true
+!![]; // true
+```
+
+## 9.4 단축 평가
+
+### 9.4.1 논리 연산자를 사용한 단축 평가
+
+    - 단축 평가는 표현식을 평가하는 도중에 평가 결과가 확정된 경우 나머지 평가 과정을 생략하는 것을 말한다.
+    - 논리곱(&&) 연산자와 논리합(||)연산자는 이처럼 논리 연산의 결과를 결정짓는 피연산자를 타입 변환하지 않고 그대로 반환한다.
+
+### 예제 09-19
+
+```javascript
+// 논리합(||) 연산자
+"Cat" || "Dog"; //"Cat"
+false || "Dog"; //"Dog"
+"Cat" || false; //"Cat"
+// 논리곱(&&) 연산자
+"Cat" && "Dog"; // "Dog"
+false && "Dog"; // false
+"Cat" && false; // false
+```
+
+### 예제 09-20
+
+```javascript
+var done = true;
+var message = "";
+
+// 주어진 조건이 true일때
+if (done) message = "완료";
+
+// if문은 단축 평가로 대체 가능하다.
+//done이 true라면 message에 '완료'를 할당
+
+message = done && "완료";
+console.log(message);
+```
+
+### 예제 09-23
+
+```javascript
+//객체를 가리키기를 기대하는 변수가 null 또는 undefined가 아닌지 확인하고 프로퍼티를 참조할 때
+var elem = null;
+var value = elem.value; // TypeError : Cannot read property 'value' to a null
+//발생하는 참조 에러를 단축평가를 사용하면 에러를 발생시키지 않는다.
+```
+
+### 예제 09-24
+
+```javascript
+var elem = null;
+// elem이 null이나 undefined와 같은 Falsy 값이면 elem으로 평가되고
+//elem이 Truthy 값이면 elem.value로 평가된다.
+var value = elem && elem.value; // null
+```
+
+### 예제 09-25
+
+```javascript
+//함수 매개변수에 기본값을 설정할 떄
+// 단축 평가를 사용한 매개변수의 기본값 설정
+function getStringLength(str) {
+  str = str || "";
+  return str.length;
+}
+
+getStringLength(); //0
+getStringLength("hi"); //2
+
+//ES6의 매개변수의 기본값 설정
+function getStringLength(str = "") {
+  return str.length;
+}
+
+getStringLength(); //0
+getStringLength("hi"); //2
+```
+
+### 9.4.2 옵셔널 체이닝 연산자( ?. )
+
+    - Es11에서 도입된 옵셔널 체이닝 연산자( ?. )는 좌항의 피연산자가 null또는 undefined인 경우 undefined를 반환하고, 그렇지 않으면 우항의 프로퍼티 참조를 이어간다.
+    - 옵셔널 체이닝 연산자는 객체를 가리키기를 기대하는 변수가 null또는 undefined가 아닌지 확인하고 프로퍼티를 참조할 때 유용하다.
+    - 옵셔널 체이닝 연산자가 도입되기 이전에는 논리 연산자&&를 사용한 단축평가를 통해  null또는 undefined가 아닌지 확인했다.
+    - 옵셔널 체이닝 연산자( ?. )는 좌항 피연산자가 false로 평가되는 Falsy값이라도 null또는 undefined가 아니면 우항의 프로퍼티 참조를 이어간다.
+
+### 예제 09-26
+
+```javascript
+var elem = null;
+
+//elem이 null 또는 undefuned이면 undefined를 반환하고 그렇지 않으면 우항의 프로퍼티 참조를 이어간다.
+var value = elem?.value;
+console.log(value); //undefined
+```
+
+### 예제 09-27
+
+```javascript
+var elem = null;
+
+//elem이 null 또는 undefuned이면 undefined를 반환하고 그렇지 않으면 우항의 프로퍼티 참조를 이어간다.
+var value = elem && elem.value;
+console.log(value); //null
+```
+
+### 예제 09-28
+
+```javascript
+var str = "";
+
+// 문자열의 길이(length)를 참조한다.
+var length = str && str.length;
+// 문자열의 길이(length)를 참조하지 못한다.
+console.log(length); // ''
+```
+
+###예제 09-29
+
+```javascript
+var str = "";
+
+// 문자열의 길이(length)를 참조한다. 이때 좌항 피연산자가 false로 평가되는 Falsy값이라도
+//null 또는 undefined가 아니면 우항의 프로퍼티 참조를 이어간다.
+var length = str?.length;
+// 문자열의 길이(length)를 참조하지 못한다.
+console.log(length); // 0
+```
+
+### 9.4.3 null 병합 연산자 ( ?? )
+
+    - null 병합 연산자( ?? ) 는 좌항의 피산자가 null또는 undefined인 경우 우항의 피연산자를 반환하고, 그렇지 않으면 좌항의 피연산자를 반환한다.
+    - null 병합 연산자( ?? )는 변수에 기본값을 설정할 때 유용하다.
+    - null 병합 연산자( ?? )가 도입되기 이전에는 논리합 연산자 || 를 사용한 단축평가를 통해 변수에 기본값을 설정했다.
+    - null 병합 연산자( ?? )는 좌항의 피연산자가 false로 평가되는 Falsy값이라도 null 또는 undefined가 아니면 좌항의 피연산자를 그대로 반환한다.
+
+## 예제 09-30
+
+```javascript
+//좌항의 피연산자가 null또는 undefined이면 우항의 피연산자를 반환하고,
+//그렇지 않으면 좌항의 피연산자를 반환한다.
+var foo = null ?? "default string";
+console.log(foo); // "default string"
+```
+
+### 예제 09-31
+
+```javascript
+//Falsy값이 0이나 ''도 기존값으로서 유효하다면 예기치 않은 동작이 발생할 수 있다.
+var foo = "" || "default string";
+console.log(foo); // "default string"
+```
+
+### 예제 09-32
+
+```javascript
+//좌항의 피연산자가 Falsy값이라도 null 또는 undefined가 아니면 좌항의 피연산자를 반환한ㄷ.
+var foo = "" ?? "default string";
+console.log(foo); // ""
+```

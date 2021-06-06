@@ -1,154 +1,83 @@
-// 예제 10-03
+
+//예제 11-01
+
+//  const 키워드를 사용해 선언한 변수는 재할당이 금지된다. 상수는 재할당이 금지된 변수일 뿐이다.
+const o = {};
+//const 키워드를 사용해 선언한 변수에 할당한 원시 값은 변경할 수 없다
+//하지만 const키워드를 사용해 선언한 변수에 할당한 객체는 변경할 수 있다.
+o.a = 1;
+console.log(o);
+
+//예제 11-04
+var str = 'string';
+
+console.log(str[0]);
+
+console.log(str.length);
+console.log(str.toUpperCase());
+
+
+//예제 11-05
+var str = 'string';
+
+str[0] = 'S';
+console.log(str);
+
+//예제 11-08
+var score = 80;
+
+var copy = score;
+console.log(score, copy); // 80 80
+console.log(score === copy); // true
+
+score = 100;
+console.log(score, copy); // 100 80
+console.log(score === copy); // fales
+
+//예제 11-13
 var person = {
-    //프로퍼티 키는 name,프로퍼티 값은  'lee' 
-    name: 'lee',
-    //프로퍼티 키는 age,프로퍼티 값은  20 
-    age: 20
+    name: 'Lee'
 };
 
+//프로퍼티 값 갱신
+person.name = 'Kim';
 
-// 예제 10-04
+//프로퍼티 동적 생성
+person.address = 'Seoul';
+
+console.log(person); // { name: 'Kim', address: 'Seoul' }
+
+
+//예제 11-17
 var person = {
-    //식별자 네이밍 규칙을 준수하는 프로퍼티 키 
-    firstName: 'Ung-mo',
-    //식별자 네이밍 규칙을 준수하지 않은 프로퍼티 키 
-    'last-name': 'Lee'
-}; 
-console.log(person); // {firsrName: "Ung-mo", last-name : "Lee"}
+    name: 'Lee'
+};
+//참조 값을 복사. 동일한 참조 값을 갖는다
+var copy = person;
 
-//예제 10-06
-var obj = {};
-var key = 'hello';
+console.log(copy === person); //true
 
-//ES5 : 프로퍼티 키 동적 생성
-obj[key] = 'world';
-//ES6 계산된 프로퍼티 이름
-//var obj={[key]: 'world'};
+//copy흫 통해 객체를 변경한다.
+copy.name = 'Kim';
 
-console.log(obj); // {hello: "world"}
+//person을 통해 객체를 변경한다.
+person.address = 'Seoul';
 
-//예제 10-10
-var foo = {
-    name: 'Lee',
-    name: 'kim'
+//copy와 person은 동일한 객체를 가리킨다.
+//따라서 어느 한쪽에서 객체를 변경하면 서로 영향을 주고 받는다.
+
+console.log(copy); // { name: 'Kim', address: 'Seoul' }
+console.log(person); // { name: 'Kim', address: 'Seoul' }
+
+//예제 11-18
+
+var person1 = {
+    name: 'Lee'
 };
 
-console.log(foo); //{ name: "kim"}
-
-//예제 10-11
-var circle = {
-    radius: 5,
-    getDiameter: function () {
-        return 2 * this.radius;
-    }
+var person2 = {
+    name: 'Lee'
 };
 
-console.log(circle.getDiameter()); // 10
-
-
-//예제 10-12
-var person = {
-    name: 'lee',
-
-};
-
-console.log(person.name); // Lee
-console.log(person['name']);
-
-//예제 10-16
-var person = {
-    name: 'lee',
-
-};
-//person객체에 name프로퍼티가 존재하므로 name프로퍼티의 값이 갱신된다.
-person.name = 'kim';
-console.log(person); //{name: "kim"}
-//예제 10-17
-var person = {
-    name: 'lee',
-
-};
-//person객체에 age 프로퍼티가 존재하지 않는다.
-//따라서 person 객체에 age프로퍼티가 동적으로 생성되고 값이 할당된다.
-person.age = 20;
-console.log(person); //{name: "kim", age: 20}
-
-//예제 10-18
-var person = {
-    name: 'lee',
-
-};
-
-person.age = 20;
-
-//delete 연산자로 age프로퍼티를 삭제할 수 있다.
-delete person.age;
-
-//delete 연산자로 address 프로퍼티를 삭제할 수 없다. 이때 에러가 발생하지 않는다.
-delete person.address;
-    
-//예제 10-19
-//ES5
-var x = 1, y = 2;
-
-var obj = {
-    x: x,
-    y: y
-};
-
-console.log(obj); //{x: 1, y: 2}
-
-//예제 10-20
-//ES6
-var x = 1, y = 2;
-
-var obj = {x, y};
-
-console.log(obj); //{x: 1, y: 2}
-
-//예제 10-21
-//ES5
-var prefix = 'prop';
-var i=0;
-
-var obj = {};
-
-obj[prefix + '-' + ++i] = i;
-obj[prefix + '-' + ++i] = i;
-obj[prefix + '-' + ++i] = i;
-console.log(obj); //{prop-1: 1, prop-2: 2, prop-3: 3}
-//예제 10-22
-//ES6
-var prefix = 'prop';
-var i=0;
-
-var obj = {
-[`${prefix }- ${++i}`] : i,
-[`${prefix}- ${++i}`]: i,
-[`${prefix }- ${++i}`] : i,
-};
-console.log(obj); //{prop-1: 1, prop-2: 2, prop-3: 3}
-
-//예제 10-23
-//ES5
-var obj = {
-    name: 'Lee',
-    sayHi: function () {
-        console.log('Hi!' + this.name);
-    }
-};
-
-obj.sayHi();// Hi! Lee
-
-//예제 10-24
-
-//ES6
-var obj = {
-    name: 'Lee',
-    //메서드 축약표현
-    sayHi() {
-        console.log('Hi!' + this.name);
-    }
-};
-
-obj.sayHi();// Hi! Lee
+console.log(person1 === person2); // false
+console.log(person1.name === person2.name); //true

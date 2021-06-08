@@ -239,3 +239,200 @@ console.log(add(2, 5)); // 7
 const add = (x, y) => x + y;
 console.log(add(2, 5)); // 7
 ```
+
+<!-- Line -->
+
+---
+
+## 12.5 함수 호출
+
+## 12.5.1 매개변수와 인수
+
+    -매개변수를 통해 인수를 전달한다. 인수는 값으로 평가될 수 있는 표현식이어야 한다.
+    -인수는 함수를 호출할 때 지정하며, 개수와 타입에 제한이 없다.
+    -매개변수는 함수를 정의할 때 선언하며, 변수와 동일하게 취급한다.
+    -함수가 호출되면 매개변수가 생성되고 undefined로 초기화된 이후 인수가 순서대로 할당된다.
+    -매개변수는 함수 몸체 내부에서만 참조할 수 있다. 즉, 매개변수의 스코프는 함수 내부다.
+    -함수는 매개변수의 개수와 인수의 개수가 일치하는지 체크하지 않는다. 인수가 부족해 할당되지 않은 매개변수의 값은 undefined다.
+    -매개변수보다 인수가 더많은 경우 초과된 인수는 무시되며, 암묵적으로 arguments 객체의 프로퍼티로 보관된다.
+
+### 예제 12-17
+
+```javascript
+function add(x, y) {
+  console.log(x, y);
+  return x + y;
+}
+
+add(2, 5);
+
+// add함수의 매개변수 x,y는 함수 몸체 내부에서만 참조할 수 있다.
+console.log(x, y); //ReferenceError : x is not defined
+```
+
+### 예제 12-18
+
+```javascript
+function add(x, y) {
+  return x + y;
+}
+
+console.log(add(2)); // NaN
+```
+
+### 예제 12-19
+
+```javascript
+function add(x, y) {
+  return x + y;
+}
+
+console.log(add(2, 5, 10)); //7
+```
+
+### 예제 12-20
+
+```javascript
+function add(x, y) {
+  console.log(arguments);
+
+  return x + y;
+}
+
+add(2, 5, 10);
+```
+
+<!-- Line -->
+
+---
+
+## 12.5.2 인수 확인
+
+    -자바스크립트 함수는 매개변수와 인수의 개수가 일치하는지 확인하지 않는다.
+    -자바스크립트는 동적 타입 언어다. 따라서 자바스크립트 함수는 매개변수의 타입을 사전에 지정할 수 없다.
+    -따라서 자바스크립트의 경우 함수를 정의할 때 적절한 인수가 전달되었는지 확인할 필요가 있다.
+    -ES6에서 도입된 매개변수 기본값을 사용하면 함수 내에서 수행하던 인수 체크 및 초기화를 간소화할 수 있다.
+    -매개변수 기본값은 매개변수에 인수를 전달하지 않았거나 undefined를 전달한 경우에만 유효하다.
+
+### 예제 12-22
+
+```javascript
+function add(x, y) {
+  return x + y;
+}
+
+console.log(add(2)); //NaN
+console.log(add("a", "b")); //'ab'
+```
+
+### 예제 12-23
+
+```javascript
+function add(x, y) {
+  if (typeof x !== "number" || typeof y !== "number") {
+    //매개 변수를 통해 전달된 인수의 타입이 부적절한 경우 에러를 발생시킨다.
+    throw new TypeError("인수는 모두 숫자 값이어야 합니다.");
+  }
+  return x + y;
+}
+
+console.log(add(2)); //TypeError: 인수는 모두 숫자 값이어야 합니다.
+console.log(add("a", "b")); //TypeError: 인수는 모두 숫자 값이어야 합니다.
+```
+
+### 예제 12-25
+
+```javascript
+function add(a = 0, b = 0, c = 0) {
+  return a + b + c;
+}
+
+console.log(add(1, 2, 3)); //6
+console.log(add(1, 2)); //3
+console.log(add(1)); //1
+console.log(add()); //0
+```
+
+<!-- Line -->
+
+---
+
+## 12.5.3 매개변수의 최대 개수
+
+    -매개변수는 순서에 의미가 있다. 이상적인 함수는 한가지 일만 해야 하며 가급적 작게 만들어야 한다.
+    -매개변수는 최대 3개 이상을 넘지 않을것을 권장하고, 그 이상이 필요하다면 객체를 인수로 전달하는 것이 유리하다.
+    -객체를 인수로 사용하는 경우 프로퍼티 키만 정확히 지정하면 매개변수의 순서는 고려하지 않아도 된다.
+    -하지만 객체를 함수 내부에서 변경하면 함수 외부의 객체가 변경되는 부수 효과가 발생한다.
+
+### 예제 12-26
+
+```javascript
+$.ajax({
+  method: "POST",
+  url: "/user",
+  data: { id: 1, name: "Lee" },
+  cache: false,
+});
+```
+
+<!-- Line -->
+
+---
+
+## 12.5.4 반환문
+
+    -return 키워드와 표현식으로 결과를 함수 외부로 반환할 수 있다.
+    -반환문은 두가지 역할을 한다. 1.반환문은 함수의 실행을 중단하고 함수 몸체를 빠져나간다. 이후에 문은 실행되지 않고 무시된다. 2. 반환문은 return키워드 뒤에 오는 표현식을 평가해 반환한다. 표현식을 명시적으로 지정하지 않으면 undefined가 반환된다.
+    -반환문은 생략할 수 있다. 암묵적으로 undefined를 반환한다.
+    -반환문은 함수 몸체 내부에서만 사용할 수 있다. 전역에서 사용하면 문법 에러(SyntaxError: Illegal return statement)가 발생한다.
+
+### 예제 12-27
+
+```javascript
+function multiply(x, y) {
+  return x * y;
+}
+
+var result = multiply(3, 5);
+console.log(result); //15
+```
+
+### 예제 12-28
+
+```javascript
+function multiply(x, y) {
+  return x * y;
+  console.log("실행되지 않는다.");
+}
+
+console.log(multiply(3, 5)); //15
+```
+
+### 예제 12-29
+
+```javascript
+function foo() {
+  return;
+}
+
+console.log(foo()); //undefined
+//예제 12-30
+function foo() {}
+
+console.log(foo()); //undefined
+```
+
+### 예제 12-31
+
+```javascript
+function multiply(x, y) {
+  return; // return 키워드와 반환값 사이에 줄바꿈이 있으면 세미콜론 자동 삽입 기능(ASI)에 의해 세미콜론이 추가된다.
+  x * y; // 무시된다.
+}
+
+console.log(multiply(3, 5)); //undefined
+```
+
+<!-- Line -->
+
+---

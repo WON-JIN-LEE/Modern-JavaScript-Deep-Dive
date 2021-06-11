@@ -1,114 +1,74 @@
-//13-01
-function add(x, y) {
-    // 매개변수는 함수 몸체 내부에서만 참조할 수 있다.
-    // 즉, 매개변수의 스코프(유효범위)는 함수 몸체 내부다.
-    console.log(x, y); // 2 5
-    return x + y;
-}
-
-add(2, 5);
-
-// 매개변수는 함수 몸체 내부에서만 참조할 수 있다.
-console.log(x, y); // ReferenceError: x is not defined
-//13-02
-var var1 = 1; // 코드의 가장 바깥 영역에서 선언한 변수
-
-if (true) {
-    var var2 = 2; // 코드 블록 내에서 선언한 변수
-    if (true) {
-        var var3 = 3; // 중첩된 코드 블록 내에서 선언한 변수
-    }
-}
-
+// 예제 14-01
 function foo() {
-    var var4 = 4; // 함수 내에서 선언한 변수
-
-    function bar() {
-        var var5 = 5; // 중첩된 함수 내에서 선언한 변수
-    }
+    var x = 'local';
+    console.log(x); // local
+    return x;
 }
 
-console.log(var1); // 1
-console.log(var2); // 2
-console.log(var3); // 3
-console.log(var4); // ReferenceError: var4 is not defined
-console.log(var5); // ReferenceError: var5 is not defined
-//13-03
+foo();
+console.log(x); // ReferenceError: x is not defined
+// 예제 14-02
 var x = 'global';
 
 function foo() {
-    var x = 'local';
     console.log(x); // ①
+    var x = 'local';
 }
 
 foo();
-
-console.log(x); // ②
-// 13-04
-function foo() {
-    var x = 1;
-    // var 키워드로 선언된 변수는 같은 스코프 내에서 중복 선언을 허용한다.
-    // 아래 변수 선언문은 자바스크립트 엔진에 의해 var 키워드가 없는 것처럼 동작한다.
-    var x = 2;
-    console.log(x); // 2
-}
-foo();
-// 13-05
-function bar() {
-    let x = 1;
-    // let이나 const 키워드로 선언된 변수는 같은 스코프 내에서 중복 선언을 허용하지 않는다.
-    let x = 2; // SyntaxError: Identifier 'x' has already been declared
-}
-bar();
-// 13-06
-// 전역 함수
-function foo() {
-    console.log('global function foo');
-}
-
-function bar() {
-    // 중첩 함수
-    function foo() {
-        console.log('local function foo');
-    }
-
-    foo(); // ①
-}
-
-bar();
-// 13-07
+console.log(x); // global
+// 예제 14-03
 var x = 1;
 
-if (true) {
-    // var 키워드로 선언된 변수는 함수의 코드 블록(함수 몸체)만을 지역 스코프로 인정한다.
-    // 함수 밖에서 var 키워드로 선언된 변수는 코드 블록 내에서 선언되었다 할지라도 모두 전역 변수다.
-    // 따라서 x는 전역 변수다. 이미 선언된 전역 변수 x가 있으므로 x 변수는 중복 선언된다.
-    // 이는 의도치 않게 변수 값이 변경되는 부작용을 발생시킨다.
-    var x = 10;
-}
+// ... 변수의 중복 선언. 기존 변수에 값을 재할당한다.
+var x = 100;
+console.log(x); // 100
+// 예제 14-04
+(function () {
+    var foo = 10; // 즉시 실행 함수의 지역 변수
+    // ...
+}());
 
-console.log(x); // 10
-// 13-08
-var i = 10;
+console.log(foo); // ReferenceError: foo is not defined
+// 예제 14-05
+var MYAPP = {}; // 전역 네임스페이스 객체
 
-// for 문에서 선언한 i는 전역 변수다. 이미 선언된 전역 변수 i가 있으므로 중복 선언된다.
-for (var i = 0; i < 5; i++) {
-    console.log(i); // 0 1 2 3 4
-}
+MYAPP.name = 'Lee';
 
-// 의도치 않게 변수의 값이 변경되었다.
-console.log(i); // 5
-// 13-09
-var x = 1;
+console.log(MYAPP.name); // Lee
+// 예제 14-06
+var MYAPP = {}; // 전역 네임스페이스 객체
 
-function foo() {
-    var x = 10;
-    bar();
-}
+MYAPP.person = {
+    name: 'Lee',
+    address: 'Seoul'
+};
 
-function bar() {
-    console.log(x);
-}
+console.log(MYAPP.person.name); // Lee
+// 예제 14-07
+var Counter = (function () {
+    // private 변수
+    var num = 0;
 
-foo(); // ?
-bar(); // ?
+    // 외부로 공개할 데이터나 메서드를 프로퍼티로 추가한 객체를 반환한다.
+    return {
+        increase() {
+            return++ num;
+        },
+        decrease() {
+            return-- num;
+        }
+    };
+}());
+
+// private 변수는 외부로 노출되지 않는다.
+console.log(Counter.num); // undefined
+
+console.log(Counter.increase()); // 1
+console.log(Counter.increase()); // 2
+console.log(Counter.decrease()); // 1
+console.log(Counter.decrease()); // 0
+
+// 예제 14-08
+<script type="module" src="lib.mjs"></script> 
+< script type = "module" src = "app.mjs" > </script>

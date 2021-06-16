@@ -1,21 +1,13 @@
-function square(number) {
-    return number * number;
-
+// 생성자 함수
+function Person(name) {
+    this.name = name;
 }
+Person.prototype.name = "JIN";
 
-console.dir(square);
-console.log(Object.getOwnPropertyDescriptors(square));
+const me = new Person('Lee');
 
-// 기명 함수 표현식
-var namedFunc = function foo() {};
-console.log(namedFunc.name); // foo
-
-// 익명 함수 표현식
-var anonymousFunc = function goo() {};
-// ES5: name 프로퍼티는 빈 문자열을 값으로 갖는다.
-// ES6: name 프로퍼티는 함수 객체를 가리키는 변수 이름을 값으로 갖는다.
-console.log(anonymousFunc.name); // anonymousFunc
-
-// 함수 선언문(Function declaration)
-function bar() {}
-console.log(bar.name); // bar
+// 결국 Person.prototype과 me.__proto__는 결국 동일한 프로토타입을 가리킨다.
+console.log(Person.prototype === me.__proto__); // true
+console.log(Person.prototype); // true
+console.log(me.__proto__); // true
+console.log(Person.prototype.constructor); // true

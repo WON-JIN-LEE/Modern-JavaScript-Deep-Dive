@@ -61,6 +61,7 @@ console.log(decreaser()); // -2
 
 ## 18.2 함수 객체의 프로퍼티
 
+- 함수는 객체다. 따라서 함수도 프로퍼티를 가질 수 있다. Console.dir 메서드를 사용하여 함수 객체의 내부를 들여다 볼 수 있다.
 - arguments, caller, length, name, prototype 프로퍼티는 모두 함수 객체의 데이터 프로퍼티다. 이는 일반 객체에는 없는 함수 객체 고유의 프로퍼티다.
 - 하지만 \_ _ proto _ \_ 는 접근자 프로퍼티이며, 함수 객체 고유의 프로퍼티가 아니라 Object.prototype 객체의 프로퍼티를 상속받은 것이다.
 - 즉, Object.prototype 객체의 \_ _ proto _ \_ 접근자 프로퍼티는 모든 객체가 사용할 수 있다.

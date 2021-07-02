@@ -220,7 +220,7 @@ console.log(typeof Infinity); // number
 
 > NaN
 
-- NaN프로퍼티는 숫자가 아님(Not-a-Number)을 숫자값 NaN를 갖는다. NaN프로퍼티는 Number.>NaN 프로퍼티와 같다.
+- NaN프로퍼티는 숫자가 아님(Not-a-Number)을 나타내는 숫자값 NaN를 갖는다. NaN프로퍼티는 Number.NaN 프로퍼티와 같다.
 
 ### 예제 21-13
 
@@ -328,6 +328,7 @@ console.log(+null); // 0
 > isNaN
 
 - 전달받은 인수가 NaN인지 검사하여 그결과를 불리언 타입으로 반환한다.
+- 인수가 숫자라면 false를, 아니라면 true를 반환한다.
 - 전달받은 인수의 타입이 숫자가 아닌 경우 숫자로 타입 변환 후 검사를 수행한다.
 
 ### 예제 21-22

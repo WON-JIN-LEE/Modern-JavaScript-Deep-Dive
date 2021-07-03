@@ -864,6 +864,24 @@ arr.includes(3, -1); // -> true
 - 비교 함수는 양수나 음수 또는 0을 반해야 한다.
 - 비교 함수의 반환값이 0보다 작으면 비교 함수의 첫 번째 인수를 우선하여 정렬하고 0이면 정렬하지 않으며 0보다 크면 두번 째 인수를 우선하여 정렬 한다.
 
+### 예제 27-89
+
+```js
+const fruits = ["Banana", "Orange", "Apple"];
+
+// 오름차순(ascending) 정렬
+fruits.sort();
+
+// sort 메서드는 원본 배열을 직접 변경한다.
+console.log(fruits); // ['Apple', 'Banana', 'Orange']
+
+// 내림차순(descending) 정렬
+fruits.reverse();
+
+// reverse 메서드도 원본 배열을 직접 변경한다.
+console.log(fruits); // ['Orange', 'Banana', 'Apple']
+```
+
 ### 27.9.2 Array.prototype.forEach
 
 - forEach 메서드는 for문을 대체할 수 있는 고차 함수다.
@@ -874,6 +892,18 @@ arr.includes(3, -1); // -> true
 - forEach 메서드는 for 문과는 달리 break 문을 사용할 수 없다. 다시 말해, 배열의 모든 요소를 순회하며 중간에 순회를 중단할 수 없다.
 - 희소 배열의 경우 존재하지 않는 요소는 순회 대상에서 제외된다.
 - forEach 메서드는 for 문에 비해 성능이 좋지는 않다. 하지만 for 문보다 가독성이 좋으므로 적극 사용을 권장한다.
+- JSON.stringify 메서드 : 객체를 JSON 포맷의 문자열로 변환한다.
+
+### 예제 27-96
+
+```js
+const numbers = [1, 2, 3];
+let pows = [];
+
+// forEach 메서드는 numbers 배열의 모든 요소를 순회하면서 콜백 함수를 반복 호출한다.
+numbers.forEach(item => pows.push(item \*\* 2));
+console.log(pows); // [1, 4, 9]
+```
 
 ### 27.9.3 Array.prototype.map
 
@@ -887,6 +917,24 @@ arr.includes(3, -1); // -> true
 - map 메소드에 두번째 인자로 this를 전달할 수 있다.
 - 콜백함수를 ES6의 Arrow function를 사용하면 this를 생략하여도 동일한 동작을 한다.
 
+### 예제 27-106
+
+```js
+const numbers = [1, 4, 9];
+
+// map 메서드는 numbers 배열의 모든 요소를 순회하면서 콜백 함수를 반복 호출한다.
+// 그리고 콜백 함수의 반환값들로 구성된 새로운 배열을 반환한다.
+const roots = numbers.map((item) => Math.sqrt(item));
+
+// 위 코드는 다음과 같다.
+// const roots = numbers.map(Math.sqrt);
+
+// map 메서드는 새로운 배열을 반환한다
+console.log(roots); // [ 1, 2, 3 ]
+// map 메서드는 원본 배열을 변경하지 않는다
+console.log(numbers); // [ 1, 4, 9 ]
+```
+
 ### 27.9.4 Array.prototype.filter
 
 - filter메서드는 자신을 호출한 배열의 모든 요소를 순회하면서 인수로 전달받은 콜백 함수를 반복 호출한다.
@@ -898,6 +946,18 @@ arr.includes(3, -1); // -> true
 - filter메서드를 사용해 특정 요소를 제거할 경우 특정 요소가 중복되어 있다면 중복된 요소가 모두 제거된다.
 - 특정요소 하나만 제거하려면 indexOf 를 통해 splice 메서드를 사용한다.
 
+### 예제 27-110
+
+```js
+const numbers = [1, 2, 3, 4, 5];
+
+// filter 메서드는 numbers 배열의 모든 요소를 순회하면서 콜백 함수를 반복 호출한다.
+// 그리고 콜백 함수의 반환값이 true인 요소로만 구성된 새로운 배열을 반환한다.
+// 다음의 경우 numbers 배열에서 홀수인 요소만을 필터링한다(1은 true로 평가된다).
+const odds = numbers.filter((item) => item % 2);
+console.log(odds); // [1, 3, 5]
+```
+
 ### 27.9.5 Array.prototype.reduce
 
 - 배열을 순회하며 각 요소에 대하여 이전의 콜백함수 실행 반환값을 전달하여 콜백함수를 실행하고 그 결과를 반환한다.
@@ -907,6 +967,18 @@ arr.includes(3, -1); // -> true
 - reduce메서드의 두 번째 인수로 전달하는 초기값은 첫 번째 순회에 콜백 함수의 첫 번째인수로 전달된다.
 - reduce메서드의 두번째 인수는 생략할 수 있다. 하지만 reduce메서드를 호출할 때는 언제나 초기값을 전달하는 것이 안전하다.
 
+### 예제 27-113
+
+```js
+// [1, 2, 3, 4]의 모든 요소의 누적을 구한다.
+const sum = [1, 2, 3, 4].reduce(
+  (accumulator, currentValue, index, array) => accumulator + currentValue,
+  0
+);
+
+console.log(sum); // 10
+```
+
 ### 27.9.6 Array.prototype.some
 
 - 배열 내 일부 요소가 콜백 함수의 테스트를 통과하는지 확인하여 그 결과를 boolean으로 반환한다. IE 9 이상에서 정상 동작한다.
@@ -915,6 +987,22 @@ arr.includes(3, -1); // -> true
 - 즉 배열의 요소 중에 콜백 함수를 통해 정의한 조건을 만족하는 요소가 1개 이상 존재하는지 확인하여 그결과를 불리언 타입으로 반환한다.
 - 단 some 메서드를 호출한 배열이 빈 배열인 경우 false를 반환한다.
 
+### 예제 27-128
+
+```js
+// 배열의 요소 중에 10보다 큰 요소가 1개 이상 존재하는지 확인
+[5, 10, 15].some((item) => item > 10); // -> true
+
+// 배열의 요소 중에 0보다 작은 요소가 1개 이상 존재하는지 확인
+[5, 10, 15].some((item) => item < 0); // -> false
+
+// 배열의 요소 중에 'banana'가 1개 이상 존재하는지 확인
+["apple", "banana", "mango"].some((item) => item === "banana"); // -> true
+
+// some 메서드를 호출한 배열이 빈 배열인 경우 언제나 false를 반환한다.
+[].some((item) => item > 3); // -> false
+```
+
 ### 27.9.7 Array.prototype.every
 
 - 배열 내 모든 요소가 콜백함수의 테스트를 통과하는지 확인하여 그 결과를 boolean으로 반환한다. IE 9 이상에서 정상 동작한다.
@@ -922,6 +1010,19 @@ arr.includes(3, -1); // -> true
 - every메서드는 콜백 함수의 반환값이 모두 참이면 true, 단 한 번이라도 거짓이면 false를 반환한다.
 - 배열의 모든 요소가 콜백 함수를 통해 정의한 조건을 모두 만족하는지 확인하여 그 결과를 불리언 타입으로 반환한다.
 - 단 every메서드를 호출한 배열이 빈 배열인 경우 언제나 true를 반환한다.
+
+### 예제 27-129
+
+```js
+// 배열의 모든 요소가 3보다 큰지 확인
+[5, 10, 15].every((item) => item > 3); // -> true
+
+// 배열의 모든 요소가 10보다 큰지 확인
+[5, 10, 15].every((item) => item > 10); // -> false
+
+// every 메서드를 호출한 배열이 빈 배열인 경우 언제나 true를 반환한다.
+[].every((item) => item > 3); // -> true
+```
 
 ### 27.9.8 Array.prototype.find
 
@@ -932,12 +1033,82 @@ arr.includes(3, -1); // -> true
 - 참고로 filter는 콜백함수의 실행 결과가 true인 배열 요소의 값만을 추출한 새로운 배열을 반환한다. 따라서 filter의 반환값은 언제나 배열이다.
 - 하지만 find는 콜백함수를 실행하여 그 결과가 참인 첫번째 요소를 반환하므로 find의 결과값은 해당 요소값이다.
 
+### 예제 27-130
+
+```js
+const users = [
+  { id: 1, name: "Lee" },
+  { id: 2, name: "Kim" },
+  { id: 2, name: "Choi" },
+  { id: 3, name: "Park" },
+];
+
+// id가 2인 첫 번째 요소를 반환한다. find 메서드는 배열이 아니라 요소를 반환한다.
+users.find((user) => user.id === 2); // -> {id: 2, name: 'Kim'}
+```
+
+### 예제 27-131
+
+```js
+// Array#filter는 배열을 반환한다.
+[1, 2, 2, 3].filter((item) => item === 2); // -> [2, 2]
+
+// Array#find는 요소를 반환한다.
+[1, 2, 2, 3].find((item) => item === 2); // -> 2
+```
+
 ### 27.9.9 Array.prototype.findIndex
 
 - ES6에서 새롭게 도입된 메소드로 Internet Explorer에서는 지원하지 않는다.
 - 배열을 순회하며 각 요소에 대하여 인자로 주어진 콜백함수를 실행하여 그 결과가 참인 첫번째 요소의 인덱스를 반환한다.
 - 콜백함수의 실행 결과가 참인 요소가 존재하지 않는다면 -1을 반환한다.
 - 콜백함수의 매개변수를 통해 배열 요소의 값, 요소 인덱스, 메소드를 호출한 배열, 즉 this를 전달 받을 수 있다.
-  27.9.10 Array.prototype.flatMap
+
+### 예제 27-132
+
+```js
+const users = [
+  { id: 1, name: "Lee" },
+  { id: 2, name: "Kim" },
+  { id: 2, name: "Choi" },
+  { id: 3, name: "Park" },
+];
+
+// id가 2인 요소의 인덱스를 구한다.
+users.findIndex((user) => user.id === 2); // -> 1
+
+// name이 'Park'인 요소의 인덱스를 구한다.
+users.findIndex((user) => user.name === "Park"); // -> 3
+
+// 위와 같이 프로퍼티 키와 프로퍼티 값으로 요소의 인덱스를 구하는 경우
+// 다음과 같이 콜백 함수를 추상화할 수 있다.
+function predicate(key, value) {
+  // key와 value를 기억하는 클로저를 반환
+  return (item) => item[key] === value;
+}
+
+// id가 2인 요소의 인덱스를 구한다.
+users.findIndex(predicate("id", 2)); // -> 1
+
+// name이 'Park'인 요소의 인덱스를 구한다.
+users.findIndex(predicate("name", "Park")); // -> 3
+```
+
+### 27.9.10 Array.prototype.flatMap
+
 - flatMap메서드는 map메서드를 통해 생성된 새로운 배열을 평탄화한다. 즉, map메서드와 flat메서드를 순차적으로 실행하는 효과가 있다.
 - 단. flatMap메서드는 flat메서드처럼 인수를 전달하여 평탄화 깉이를 지정할 수 없고, 1단계만 평탄화한다.
+
+### 예제 27-133
+
+```js
+const arr = ["hello", "world"];
+
+// map과 flat을 순차적으로 실행
+arr.map((x) => x.split("")).flat();
+// -> ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd']
+
+// flatMap은 map을 통해 생성된 새로운 배열을 평탄화한다.
+arr.flatMap((x) => x.split(""));
+// -> ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd']
+```

@@ -1,82 +1,209 @@
-29-01
-Math.PI; // -> 3.141592653589793
-29-02
-Math.abs(-1);        // -> 1
-Math.abs('-1');      // -> 1
-Math.abs('');        // -> 0
-Math.abs([]);        // -> 0
-Math.abs(null);      // -> 0
-Math.abs(undefined); // -> NaN
-Math.abs({});        // -> NaN
-Math.abs('string');  // -> NaN
-Math.abs();          // -> NaN
-29-03
-Math.round(1.4);  // -> 1
-Math.round(1.6);  // -> 2
-Math.round(-1.4); // -> -1
-Math.round(-1.6); // -> -2
-Math.round(1);    // -> 1
-Math.round();     // -> NaN
-29-04
-Math.ceil(1.4);  // -> 2
-Math.ceil(1.6);  // -> 2
-Math.ceil(-1.4); // -> -1
-Math.ceil(-1.6); // -> -1
-Math.ceil(1);    // -> 1
-Math.ceil();     // -> NaN
-29-05
-Math.floor(1.9);  // -> 1
-Math.floor(9.1);  // -> 9
-Math.floor(-1.9); // -> -2
-Math.floor(-9.1); // -> -10
-Math.floor(1);    // -> 1
-Math.floor();     // -> NaN
-29-06
-Math.sqrt(9);  // -> 3
-Math.sqrt(-9); // -> NaN
-Math.sqrt(2);  // -> 1.414213562373095
-Math.sqrt(1);  // -> 1
-Math.sqrt(0);  // -> 0
-Math.sqrt();   // -> NaN
-29-07
-Math.random(); // 0에서 1 미만의 랜덤 실수(0.8208720231391746)
+30-01
+new Date(); // -> Mon Jul 06 2020 01:03:18 GMT+0900 (대한민국 표준시)
+30-02
+Date(); // -> "Mon Jul 06 2020 01:10:47 GMT+0900 (대한민국 표준시)"
+30-03
+// 한국 표준시 KST는 협정 세계시 UTC에 9시간을 더한 시간이다.
+new Date(0); // -> Thu Jan 01 1970 09:00:00 GMT+0900 (대한민국 표준시)
 
 /*
-1에서 10 범위의 랜덤 정수 취득
-1) Math.random으로 0에서 1 미만의 랜덤 실수를 구한 다음, 10을 곱해 0에서 10 미만의
-랜덤 실수를 구한다.
-2) 0에서 10 미만의 랜덤 실수에 1을 더해 1에서 10 범위의 랜덤 실수를 구한다.
-3) Math.floor로 1에서 10 범위의 랜덤 실수의 소수점 이하를 떼어 버린 다음 정수를 반환한다.
+86400000ms는 1day를 의미한다.
+1s = 1,000ms
+1m = 60s * 1,000ms = 60,000ms
+1h = 60m * 60,000ms = 3,600,000ms
+1d = 24h * 3,600,000ms = 86,400,000ms
 */
-const random = Math.floor((Math.random() * 10) + 1);
-console.log(random); // 1에서 10 범위의 정수
-29-08
-Math.pow(2, 8);  // -> 256
-Math.pow(2, -1); // -> 0.5
-Math.pow(2);     // -> NaN
-29-09
-// ES7 지수 연산자
-2 ** 2 ** 2; // -> 16
-Math.pow(Math.pow(2, 2), 2); // -> 16
-29-10
-Math.max(1); // -> 1
-Math.max(1, 2); // -> 2
-Math.max(1, 2, 3); // -> 3
-Math.max(); // -> -Infinity
-29-11
-// 배열 요소 중에서 최대값 취득
-Math.max.apply(null, [1, 2, 3]); // -> 3
+new Date(86400000); // -> Fri Jan 02 1970 09:00:00 GMT+0900 (대한민국 표준시)
+30-04
+new Date('May 26, 2020 10:00:00');
+// -> Tue May 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
 
-// ES6 스프레드 문법
-Math.max(...[1, 2, 3]); // -> 3
-29-12
-Math.min(1); // -> 1
-Math.min(1, 2); // -> 1
-Math.min(1, 2, 3); // -> 1
-Math.min(); // -> Infinity
-29-13
-// 배열 요소 중에서 최소값 취득
-Math.min.apply(null, [1, 2, 3]); // -> 1
+new Date('2020/03/26/10:00:00');
+// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
+30-05
+// 월을 나타내는 2는 3월을 의미한다. 2020/3/1/00:00:00:00
+new Date(2020, 2);
+// -> Sun Mar 01 2020 00:00:00 GMT+0900 (대한민국 표준시)
 
-// ES6 스프레드 문법
-Math.min(...[1, 2, 3]); // -> 1
+// 월을 나타내는 2는 3월을 의미한다. 2020/3/26/10:00:00:00
+new Date(2020, 2, 26, 10, 00, 00, 0);
+// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
+
+// 다음처럼 표현하면 가독성이 훨씬 좋다.
+new Date('2020/3/26/10:00:00:00');
+// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
+30-06
+Date.now(); // -> 1593971539112
+30-07
+// UTC
+Date.parse('Jan 2, 1970 00:00:00 UTC'); // -> 86400000
+
+// KST
+Date.parse('Jan 2, 1970 09:00:00'); // -> 86400000
+
+// KST
+Date.parse('1970/01/02/09:00:00');  // -> 86400000
+30-08
+Date.UTC(1970, 0, 2); // -> 86400000
+Date.UTC('1970/1/2'); // -> NaN
+30-09
+new Date('2020/07/24').getFullYear(); // -> 2020
+30-10
+const today = new Date();
+
+// 년도 지정
+today.setFullYear(2000);
+today.getFullYear(); // -> 2000
+
+// 년도/월/일 지정
+today.setFullYear(1900, 0, 1);
+today.getFullYear(); // -> 1900
+30-11
+new Date('2020/07/24').getMonth(); // -> 6
+30-12
+const today = new Date();
+
+// 월 지정
+today.setMonth(0); // 1월
+today.getMonth(); // -> 0
+
+// 월/일 지정
+today.setMonth(11, 1); // 12월 1일
+today.getMonth(); // -> 11
+30-13
+new Date('2020/07/24').getDate(); // -> 24
+30-14
+const today = new Date();
+
+// 날짜 지정
+today.setDate(1);
+today.getDate(); // -> 1
+30-15
+new Date('2020/07/24').getDay(); // -> 5
+30-16
+new Date('2020/07/24/12:00').getHours(); // -> 12
+30-17
+const today = new Date();
+
+// 시간 지정
+today.setHours(7);
+today.getHours(); // -> 7
+
+// 시간/분/초/밀리초 지정
+today.setHours(0, 0, 0, 0); // 00:00:00:00
+today.getHours(); // -> 0
+30-18
+new Date('2020/07/24/12:30').getMinutes(); // -> 30
+30-19
+const today = new Date();
+
+// 분 지정
+today.setMinutes(50);
+today.getMinutes(); // -> 50
+
+// 분/초/밀리초 지정
+today.setMinutes(5, 10, 999); // HH:05:10:999
+today.getMinutes(); // -> 5
+30-20
+new Date('2020/07/24/12:30:10').getSeconds(); // -> 10
+30-21
+const today = new Date();
+
+// 초 지정
+today.setSeconds(30);
+today.getSeconds(); // -> 30
+
+// 초/밀리초 지정
+today.setSeconds(10, 0); // HH:MM:10:000
+today.getSeconds(); // -> 10
+30-22
+new Date('2020/07/24/12:30:10:150').getMilliseconds(); // -> 150
+30-23
+const today = new Date();
+
+// 밀리초 지정
+today.setMilliseconds(123);
+today.getMilliseconds(); // -> 123
+30-24
+new Date('2020/07/24/12:30').getTime(); // -> 1595561400000
+30-25
+const today = new Date();
+
+// 1970년 1월 1일 00:00:00(UTC)를 기점으로 경과된 밀리초 설정
+today.setTime(86400000); // 86400000는 1day를 나타낸다.
+console.log(today); // -> Fri Jan 02 1970 09:00:00 GMT+0900 (대한민국 표준시)
+30-26
+const today = new Date(); // today의 지정 로캘은 KST다.
+
+//UTC와 today의 지정 로캘 KST와의 차이는 -9시간이다.
+today.getTimezoneOffset() / 60; // -9
+30-27
+const today = new Date('2020/7/24/12:30');
+
+today.toString();     // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
+today.toDateString(); // -> Fri Jul 24 2020
+30-28
+const today = new Date('2020/7/24/12:30');
+
+today.toString();     // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
+today.toTimeString(); // -> 12:30:00 GMT+0900 (대한민국 표준시)
+30-29
+const today = new Date('2020/7/24/12:30');
+
+today.toString();    // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
+today.toISOString(); // -> 2020-07-24T03:30:00.000Z
+
+today.toISOString().slice(0, 10); // -> 2020-07-24
+today.toISOString().slice(0, 10).replace(/-/g, ''); // -> 20200724
+30-30
+const today = new Date('2020/7/24/12:30');
+
+today.toString(); // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
+today.toLocaleString(); // -> 2020. 7. 24. 오후 12:30:00
+today.toLocaleString('ko-KR'); // -> 2020. 7. 24. 오후 12:30:00
+today.toLocaleString('en-US'); // -> 7/24/2020, 12:30:00 PM
+today.toLocaleString('ja-JP'); // -> 2020/7/24 12:30:00
+30-31
+const today = new Date('2020/7/24/12:30');
+
+today.toString(); // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
+today.toLocaleTimeString(); // -> 오후 12:30:00
+today.toLocaleTimeString('ko-KR'); // -> 오후 12:30:00
+today.toLocaleTimeString('en-US'); // -> 12:30:00 PM
+today.toLocaleTimeString('ja-JP'); // -> 12:30:00
+30 - 32
+(function printNow() {
+    const today = new Date();
+
+    const dayNames = [
+        '(일요일)',
+        '(월요일)',
+        '(화요일)',
+        '(수요일)',
+        '(목요일)',
+        '(금요일)',
+        '(토요일)'
+    ];
+
+    const day = dayNames[today.getDay()];
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    let second = today.getSeconds();
+
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+
+    hour %= 12;
+    hour = hour || 12;
+
+    minute = minute < 10 ? "0" + minute : minute;
+    second = second < 10 ? "0" + second : second;
+
+    const now = `${year}년 ${month}월 ${date}일 ${day} ${hour}:${minute}:${second}:${ampm}`
+
+    console.log(now);
+
+    setTimeout(printNow, 1000);
+}());

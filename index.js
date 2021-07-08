@@ -1,209 +1,268 @@
-30-01
-new Date(); // -> Mon Jul 06 2020 01:03:18 GMT+0900 (대한민국 표준시)
-30-02
-Date(); // -> "Mon Jul 06 2020 01:10:47 GMT+0900 (대한민국 표준시)"
-30-03
-// 한국 표준시 KST는 협정 세계시 UTC에 9시간을 더한 시간이다.
-new Date(0); // -> Thu Jan 01 1970 09:00:00 GMT+0900 (대한민국 표준시)
+31-01
+// 사용자로부터 입력받은 휴대폰 전화번호
+const tel = '010-1234-567팔';
 
-/*
-86400000ms는 1day를 의미한다.
-1s = 1,000ms
-1m = 60s * 1,000ms = 60,000ms
-1h = 60m * 60,000ms = 3,600,000ms
-1d = 24h * 3,600,000ms = 86,400,000ms
-*/
-new Date(86400000); // -> Fri Jan 02 1970 09:00:00 GMT+0900 (대한민국 표준시)
-30-04
-new Date('May 26, 2020 10:00:00');
-// -> Tue May 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
+// 정규 표현식 리터럴로 휴대폰 전화번호 패턴을 정의한다.
+const regExp = /^\d{3}-\d{4}-\d{4}$/;
 
-new Date('2020/03/26/10:00:00');
-// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
-30-05
-// 월을 나타내는 2는 3월을 의미한다. 2020/3/1/00:00:00:00
-new Date(2020, 2);
-// -> Sun Mar 01 2020 00:00:00 GMT+0900 (대한민국 표준시)
+// tel이 휴대폰 전화번호 패턴에 매칭하는지 테스트(확인)한다.
+regExp.test(tel); // -> false
+31 - 02
+const target = 'Is this all there is?';
 
-// 월을 나타내는 2는 3월을 의미한다. 2020/3/26/10:00:00:00
-new Date(2020, 2, 26, 10, 00, 00, 0);
-// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
+// 패턴: is
+// 플래그: i => 대소문자를 구별하지 않고 검색한다.
+const regexp = /is/i;
 
-// 다음처럼 표현하면 가독성이 훨씬 좋다.
-new Date('2020/3/26/10:00:00:00');
-// -> Thu Mar 26 2020 10:00:00 GMT+0900 (대한민국 표준시)
-30-06
-Date.now(); // -> 1593971539112
-30-07
-// UTC
-Date.parse('Jan 2, 1970 00:00:00 UTC'); // -> 86400000
+// test 메서드는 target 문자열에 대해 정규표현식 regexp의 패턴을 검색하여 매칭 결과를 불리언 값으로 반환한다.
+regexp.test(target); // -> true
+31-03
+const target = 'Is this all there is?';
 
-// KST
-Date.parse('Jan 2, 1970 09:00:00'); // -> 86400000
+const regexp = new RegExp(/is/i); // ES6
+// const regexp = new RegExp(/is/, 'i');
+// const regexp = new RegExp('is', 'i');
 
-// KST
-Date.parse('1970/01/02/09:00:00');  // -> 86400000
-30-08
-Date.UTC(1970, 0, 2); // -> 86400000
-Date.UTC('1970/1/2'); // -> NaN
-30-09
-new Date('2020/07/24').getFullYear(); // -> 2020
-30-10
-const today = new Date();
+regexp.test(target); // -> true
+31-04
+const target = 'Is this all there is?';
+const regExp = /is/;
 
-// 년도 지정
-today.setFullYear(2000);
-today.getFullYear(); // -> 2000
+regExp.exec(target); // -> ["is", index: 5, input: "Is this all there is?", groups: undefined]
+31-05
+const target = 'Is this all there is?';
+const regExp = /is/;
 
-// 년도/월/일 지정
-today.setFullYear(1900, 0, 1);
-today.getFullYear(); // -> 1900
-30-11
-new Date('2020/07/24').getMonth(); // -> 6
-30-12
-const today = new Date();
+regExp.test(target); // -> true
+31-06
+const target = 'Is this all there is?';
+const regExp = /is/;
 
-// 월 지정
-today.setMonth(0); // 1월
-today.getMonth(); // -> 0
+target.match(regExp); // -> ["is", index: 5, input: "Is this all there is?", groups: undefined]
+31-07
+const target = 'Is this all there is?';
+const regExp = /is/g;
 
-// 월/일 지정
-today.setMonth(11, 1); // 12월 1일
-today.getMonth(); // -> 11
-30-13
-new Date('2020/07/24').getDate(); // -> 24
-30-14
-const today = new Date();
+target.match(regExp); // -> ["is", "is"]
+31-08
+const target = 'Is this all there is?';
 
-// 날짜 지정
-today.setDate(1);
-today.getDate(); // -> 1
-30-15
-new Date('2020/07/24').getDay(); // -> 5
-30-16
-new Date('2020/07/24/12:00').getHours(); // -> 12
-30-17
-const today = new Date();
+// target 문자열에서 is 문자열을 대소문자를 구별하여 한 번만 검색한다.
+target.match(/is/);
+// -> ["is", index: 5, input: "Is this all there is?", groups: undefined]
 
-// 시간 지정
-today.setHours(7);
-today.getHours(); // -> 7
+// target 문자열에서 is 문자열을 대소문자를 구별하지 않고 한 번만 검색한다.
+target.match(/is/i);
+// -> ["Is", index: 0, input: "Is this all there is?", groups: undefined]
 
-// 시간/분/초/밀리초 지정
-today.setHours(0, 0, 0, 0); // 00:00:00:00
-today.getHours(); // -> 0
-30-18
-new Date('2020/07/24/12:30').getMinutes(); // -> 30
-30-19
-const today = new Date();
+// target 문자열에서 is 문자열을 대소문자를 구별하여 전역 검색한다.
+target.match(/is/g);
+// -> ["is", "is"]
 
-// 분 지정
-today.setMinutes(50);
-today.getMinutes(); // -> 50
+// target 문자열에서 is 문자열을 대소문자를 구별하지 않고 전역 검색한다.
+target.match(/is/ig);
+// -> ["Is", "is", "is"]
+31-09
+const target = 'Is this all there is?';
 
-// 분/초/밀리초 지정
-today.setMinutes(5, 10, 999); // HH:05:10:999
-today.getMinutes(); // -> 5
-30-20
-new Date('2020/07/24/12:30:10').getSeconds(); // -> 10
-30-21
-const today = new Date();
+// 'is' 문자열과 매치하는 패턴. 플래그가 생략되었으므로 대소문자를 구별한다.
+const regExp = /is/;
 
-// 초 지정
-today.setSeconds(30);
-today.getSeconds(); // -> 30
+// target과 정규 표현식이 매치하는지 테스트한다.
+regExp.test(target); // -> true
 
-// 초/밀리초 지정
-today.setSeconds(10, 0); // HH:MM:10:000
-today.getSeconds(); // -> 10
-30-22
-new Date('2020/07/24/12:30:10:150').getMilliseconds(); // -> 150
-30-23
-const today = new Date();
+// target과 정규 표현식의 매칭 결과를 구한다.
+target.match(regExp);
+// -> ["is", index: 5, input: "Is this all there is?", groups: undefined]
+31-10
+const target = 'Is this all there is?';
 
-// 밀리초 지정
-today.setMilliseconds(123);
-today.getMilliseconds(); // -> 123
-30-24
-new Date('2020/07/24/12:30').getTime(); // -> 1595561400000
-30-25
-const today = new Date();
+// 'is' 문자열과 매치하는 패턴. 플래그 i를 추가하면 대소문자를 구별하지 않는다.
+const regExp = /is/i;
 
-// 1970년 1월 1일 00:00:00(UTC)를 기점으로 경과된 밀리초 설정
-today.setTime(86400000); // 86400000는 1day를 나타낸다.
-console.log(today); // -> Fri Jan 02 1970 09:00:00 GMT+0900 (대한민국 표준시)
-30-26
-const today = new Date(); // today의 지정 로캘은 KST다.
+target.match(regExp);
+// -> ["Is", index: 0, input: "Is this all there is?", groups: undefined]
+31-11
+const target = 'Is this all there is?';
 
-//UTC와 today의 지정 로캘 KST와의 차이는 -9시간이다.
-today.getTimezoneOffset() / 60; // -9
-30-27
-const today = new Date('2020/7/24/12:30');
+// 'is' 문자열과 매치하는 패턴.
+// 플래그 g를 추가하면 대상 문자열 내에서 패턴과 일치하는 모든 문자열을 전역 검색한다.
+const regExp = /is/ig;
 
-today.toString();     // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
-today.toDateString(); // -> Fri Jul 24 2020
-30-28
-const today = new Date('2020/7/24/12:30');
+target.match(regExp); // -> ["Is", "is", "is"]
+31-12
+const target = 'Is this all there is?';
 
-today.toString();     // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
-today.toTimeString(); // -> 12:30:00 GMT+0900 (대한민국 표준시)
-30-29
-const today = new Date('2020/7/24/12:30');
+// 임의의 3자리 문자열을 대소문자를 구별하여 전역 검색한다.
+const regExp = /.../g;
 
-today.toString();    // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
-today.toISOString(); // -> 2020-07-24T03:30:00.000Z
+target.match(regExp); // -> ["Is ", "thi", "s a", "ll ", "the", "re ", "is?"]
+31-13
+const target = 'A AA B BB Aa Bb AAA';
 
-today.toISOString().slice(0, 10); // -> 2020-07-24
-today.toISOString().slice(0, 10).replace(/-/g, ''); // -> 20200724
-30-30
-const today = new Date('2020/7/24/12:30');
+// 'A'가 최소 1번, 최대 2번 반복되는 문자열을 전역 검색한다.
+const regExp = /A{1,2}/g;
 
-today.toString(); // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
-today.toLocaleString(); // -> 2020. 7. 24. 오후 12:30:00
-today.toLocaleString('ko-KR'); // -> 2020. 7. 24. 오후 12:30:00
-today.toLocaleString('en-US'); // -> 7/24/2020, 12:30:00 PM
-today.toLocaleString('ja-JP'); // -> 2020/7/24 12:30:00
-30-31
-const today = new Date('2020/7/24/12:30');
+target.match(regExp); // -> ["A", "AA", "A", "AA", "A"]
+31-14
+const target = 'A AA B BB Aa Bb AAA';
 
-today.toString(); // -> Fri Jul 24 2020 12:30:00 GMT+0900 (대한민국 표준시)
-today.toLocaleTimeString(); // -> 오후 12:30:00
-today.toLocaleTimeString('ko-KR'); // -> 오후 12:30:00
-today.toLocaleTimeString('en-US'); // -> 12:30:00 PM
-today.toLocaleTimeString('ja-JP'); // -> 12:30:00
-30 - 32
-(function printNow() {
-    const today = new Date();
+// 'A'가 2번 반복되는 문자열을 전역 검색한다.
+const regExp = /A{2}/g;
 
-    const dayNames = [
-        '(일요일)',
-        '(월요일)',
-        '(화요일)',
-        '(수요일)',
-        '(목요일)',
-        '(금요일)',
-        '(토요일)'
-    ];
+target.match(regExp); // -> ["AA", "AA"]
+31-15
+const target = 'A AA B BB Aa Bb AAA';
 
-    const day = dayNames[today.getDay()];
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-    let hour = today.getHours();
-    let minute = today.getMinutes();
-    let second = today.getSeconds();
+// 'A'가 최소 2번 이상 반복되는 문자열을 전역 검색한다.
+const regExp = /A{2,}/g;
 
-    const ampm = hour >= 12 ? 'PM' : 'AM';
+target.match(regExp); // -> ["AA", "AAA"]
+31-16
+const target = 'A AA B BB Aa Bb AAA';
 
-    hour %= 12;
-    hour = hour || 12;
+// 'A'가 최소 한 번 이상 반복되는 문자열('A, 'AA', 'AAA', ...)을 전역 검색한다.
+const regExp = /A+/g;
 
-    minute = minute < 10 ? "0" + minute : minute;
-    second = second < 10 ? "0" + second : second;
+target.match(regExp); // -> ["A", "AA", "A", "AAA"]
+31-17
+const target = 'color colour';
 
-    const now = `${year}년 ${month}월 ${date}일 ${day} ${hour}:${minute}:${second}:${ampm}`
+// 'colo' 다음 'u'가 최대 한 번(0번 포함) 이상 반복되고 'r'이 이어지는 문자열 'color', 'colour'를 전역 검색한다.
+const regExp = /colou?r/g;
 
-    console.log(now);
+target.match(regExp); // -> ["color", "colour"]
+31-18
+const target = 'A AA B BB Aa Bb';
 
-    setTimeout(printNow, 1000);
-}());
+// 'A' 또는 'B'를 전역 검색한다.
+const regExp = /A|B/g;
+
+target.match(regExp); // -> ["A", "A", "A", "B", "B", "B", "A", "B"]
+31-19
+const target = 'A AA B BB Aa Bb';
+
+// 'A' 또는 'B'가 한 번 이상 반복되는 문자열을 전역 검색한다.
+// 'A', 'AA', 'AAA', ... 또는 'B', 'BB', 'BBB', ...
+const regExp = /A+|B+/g;
+
+target.match(regExp); // -> ["A", "AA", "B", "BB", "A", "B"]
+31-20
+const target = 'A AA B BB Aa Bb';
+
+// 'A' 또는 'B'가 한 번 이상 반복되는 문자열을 전역 검색한다.
+// 'A', 'AA', 'AAA', ... 또는 'B', 'BB', 'BBB', ...
+const regExp = /[AB]+/g;
+
+target.match(regExp); // -> ["A", "AA", "B", "BB", "A", "B"]
+31-21
+const target = 'A AA BB ZZ Aa Bb';
+
+// 'A' ~ 'Z'가 한 번 이상 반복되는 문자열을 전역 검색한다.
+// 'A', 'AA', 'AAA', ... 또는 'B', 'BB', 'BBB', ... ~ 또는 'Z', 'ZZ', 'ZZZ', ...
+const regExp = /[A-Z]+/g;
+
+target.match(regExp); // -> ["A", "AA", "BB", "ZZ", "A", "B"]
+31-22
+const target = 'AA BB Aa Bb 12';
+
+// 'A' ~ 'Z' 또는 'a' ~ 'z'가 한 번 이상 반복되는 문자열을 전역 검색한다.
+const regExp = /[A-Za-z]+/g;
+
+target.match(regExp); // -> ["AA", "BB", "Aa", "Bb"]
+31-23
+const target = 'AA BB 12,345';
+
+// '0' ~ '9'가 한 번 이상 반복되는 문자열을 전역 검색한다.
+const regExp = /[0-9]+/g;
+
+target.match(regExp); // -> ["12", "345"]
+31-24
+const target = 'AA BB 12,345';
+
+// '0' ~ '9' 또는 ','가 한 번 이상 반복되는 문자열을 전역 검색한다.
+const regExp = /[0-9,]+/g;
+
+target.match(regExp); // -> ["12,345"]
+31-25
+const target = 'AA BB 12,345';
+
+// '0' ~ '9' 또는 ','가 한 번 이상 반복되는 문자열을 전역 검색한다.
+let regExp = /[\d,]+/g;
+
+target.match(regExp); // -> ["12,345"]
+
+// '0' ~ '9'가 아닌 문자(숫자가 아닌 문자) 또는 ','가 한 번 이상 반복되는 문자열을 전역 검색한다.
+regExp = /[\D,]+/g;
+
+target.match(regExp); // -> ["AA BB ", ","]
+31-26
+const target = 'Aa Bb 12,345 _$%&';
+
+// 알파벳, 숫자, 언더스코어, ','가 한 번 이상 반복되는 문자열을 전역 검색한다.
+let regExp = /[\w,]+/g;
+
+target.match(regExp); // -> ["Aa", "Bb", "12,345", "_"]
+
+// 알파벳, 숫자, 언더스코어가 아닌 문자 또는 ','가 한 번 이상 반복되는 문자열을 전역 검색한다.
+regExp = /[\W,]+/g;
+
+target.match(regExp); // -> [" ", " ", ",", " $%&"]
+31-27
+const target = 'AA BB Aa Bb 12';
+
+// 숫자를 제외한 문자열을 전역 검색한다.
+const regExp = /[^0-9]+/g;
+
+target.match(regExp); // -> ["AA BB Aa Bb"]
+31-28
+const target = 'https://poiemaweb.com';
+
+// 'https'로 시작하는지 검사한다.
+const regExp = /^https/;
+
+regExp.test(target); // -> true
+31-29
+const target = 'https://poiemaweb.com';
+
+// 'com'으로 끝나는지 검사한다.
+const regExp = /com$/;
+
+regExp.test(target); // -> true
+31-30
+const url = 'https://example.com';
+
+// 'http://' 또는 'https://'로 시작하는지 검사한다.
+/^https?:\/\//.test(url); // -> true
+31-31
+/^(http|https):\/\//.test(url); // -> true
+31-32
+const fileName = 'index.html';
+
+// 'html'로 끝나는지 검사한다.
+/html$/.test(fileName); // -> true
+31-33
+const target = '12345';
+
+// 숫자로만 이루어진 문자열인지 검사한다.
+/^\d+$/.test(target); // -> true
+31-34
+const target = ' Hi!';
+
+// 하나 이상의 공백으로 시작하는지 검사한다.
+/^[\s]+/.test(target); // -> true
+31-35
+const id = 'abc123';
+
+// 알파벳 대소문자 또는 숫자로 시작하고 끝나며 4 ~ 10자리인지 검사한다.
+/^[A-Za-z0-9]{4,10}$/.test(id); // -> true
+
+31-39
+const target = 'abc#123';
+
+// A-Za-z0-9 이외의 문자가 있는지 검사한다.
+(/[^A-Za-z0-9]/gi).test(target); // -> true
+31-40
+(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi).test(target); // -> true
+31-41
+target.replace(/[^A-Za-z0-9]/gi, ''); // -> abc123

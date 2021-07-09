@@ -1,265 +1,162 @@
-32-01
-const strObj = new String();
-console.log(strObj); // String {length: 0, [[PrimitiveValue]]: ""}
-32-02
-const strObj = new String('Lee');
-console.log(strObj);
-// String {0: "L", 1: "e", 2: "e", length: 3, [[PrimitiveValue]]: "Lee"}
-32-03
-console.log(strObj[0]); // L
-32-04
-// 문자열은 원시값이므로 변경할 수 없다. 이때 에러가 발생하지 않는다.
-strObj[0] = 'S';
-console.log(strObj); // 'Lee'
-32-05
-let strObj = new String(123);
-console.log(strObj);
-// String {0: "1", 1: "2", 2: "3", length: 3, [[PrimitiveValue]]: "123"}
+33-01
+// Symbol 함수를 호출하여 유일무이한 심벌 값을 생성한다.
+const mySymbol = Symbol();
+console.log(typeof mySymbol); // symbol
 
-strObj = new String(null);
-console.log(strObj);
-// String {0: "n", 1: "u", 2: "l", : "l", length: 4, [[PrimitiveValue]]: "null"}
-32-06
-// 숫자 타입 => 문자열 타입
-String(1);        // -> "1"
-String(NaN);      // -> "NaN"
-String(Infinity); // -> "Infinity"
+// 심벌 값은 외부로 노출되지 않아 확인할 수 없다.
+console.log(mySymbol);        // Symbol()
+33-02
+new Symbol(); // TypeError: Symbol is not a constructor
+33-03
+// 심벌 값에 대한 설명이 같더라도 유일무이한 심벌 값을 생성한다.
+const mySymbol1 = Symbol('mySymbol');
+const mySymbol2 = Symbol('mySymbol');
 
-// 불리언 타입 => 문자열 타입
-String(true);  // -> "true"
-String(false); // -> "false"
-32-07
-'Hello'.length;    // -> 5
-'안녕하세요!'.length; // -> 6
-32-08
-const strObj = new String('Lee');
+console.log(mySymbol1 === mySymbol2); // false
+33-04
+const mySymbol = Symbol('mySymbol');
 
-console.log(Object.getOwnPropertyDescriptors(strObj));
-/* String 래퍼 객체는 읽기 전용 객체다. 즉, writable 프로퍼티 어트리뷰트 값이 false다.
-{
-  '0': { value: 'L', writable: false, enumerable: true, configurable: false },
-  '1': { value: 'e', writable: false, enumerable: true, configurable: false },
-  '2': { value: 'e', writable: false, enumerable: true, configurable: false },
-  length: { value: 3, writable: false, enumerable: false, configurable: false }
+// 심벌도 레퍼 객체를 생성한다
+console.log(mySymbol.description); // mySymbol
+console.log(mySymbol.toString());  // Symbol(mySymbol)
+33-05
+const mySymbol = Symbol();
+
+// 심벌 값은 암묵적으로 문자열이나 숫자 타입으로 변환되지 않는다.
+console.log(mySymbol + ''); // TypeError: Cannot convert a Symbol value to a string
+console.log(+mySymbol);     // TypeError: Cannot convert a Symbol value to a string
+33-06
+const mySymbol = Symbol();
+
+// 불리언 타입으로는 암묵적으로 타입 변환된다.
+console.log(!!mySymbol); // true
+
+// if 문 등에서 존재 확인을 위해 사용할 수 있다.
+if (mySymbol) console.log('mySymbol is not empty.');
+33-07
+// 전역 심벌 레지스트리에 mySymbol이라는 키로 저장된 심벌 값이 없으면 새로운 심벌 값을 생성
+const s1 = Symbol.for('mySymbol');
+// 전역 심벌 레지스트리에 mySymbol이라는 키로 저장된 심벌 값이 있으면 해당 심벌 값을 반환
+const s2 = Symbol.for('mySymbol');
+
+console.log(s1 === s2); // true
+33-08
+// 전역 심벌 레지스트리에 mySymbol이라는 키로 저장된 심벌 값이 없으면 새로운 심벌 값을 생성
+const s1 = Symbol.for('mySymbol');
+// 전역 심벌 레지스트리에 저장된 심벌 값의 키를 추출
+Symbol.keyFor(s1); // -> mySymbol
+
+// Symbol 함수를 호출하여 생성한 심벌 값은 전역 심벌 레지스트리에 등록되어 관리되지 않는다.
+const s2 = Symbol('foo');
+// 전역 심벌 레지스트리에 저장된 심벌 값의 키를 추출
+Symbol.keyFor(s2); // -> undefined
+33-09
+// 위, 아래, 왼쪽, 오른쪽을 나타내는 상수를 정의한다.
+// 이때 값 1, 2, 3, 4에는 특별한 의미가 없고 상수 이름에 의미가 있다.
+const Direction = {
+  UP: 1,
+  DOWN: 2,
+  LEFT: 3,
+  RIGHT: 4
+};
+
+// 변수에 상수를 할당
+const myDirection = Direction.UP;
+
+if (myDirection === Direction.UP) {
+  console.log('You are going UP.');
 }
-*/
-32-09
-const str = 'Hello World';
+33-10
+// 위, 아래, 왼쪽, 오른쪽을 나타내는 상수를 정의한다.
+// 중복될 가능성이 없는 심벌 값으로 상수 값을 생성한다.
+const Direction = {
+  UP: Symbol('up'),
+  DOWN: Symbol('down'),
+  LEFT: Symbol('left'),
+  RIGHT: Symbol('right')
+};
 
-// 문자열 str에서 'l'을 검색하여 첫 번째 인덱스를 반환한다.
-str.indexOf('l'); // -> 2
+const myDirection = Direction.UP;
 
-
-// 문자열 str에서 'or'을 검색하여 첫 번째 인덱스를 반환한다.
-str.indexOf('or'); // -> 7
-
-// 문자열 str에서 'x'를 검색하여 첫 번째 인덱스를 반환한다. 검색에 실패하면 -1을 반환한다.
-str.indexOf('x'); // -> -1
-32-10
-// 문자열 str의 인덱스 3부터 'l'을 검색하여 첫 번째 인덱스를 반환한다.
-str.indexOf('l', 3); // -> 3
-32-11
-if (str.indexOf('Hello') !== -1) {
-  // 문자열 str에 'Hello'가 포함되어 있는 경우에 처리할 내용
+if (myDirection === Direction.UP) {
+  console.log('You are going UP.');
 }
-32-12
-if (str.includes('Hello')) {
-  // 문자열 str에 'Hello'가 포함되어 있는 경우에 처리할 내용
+33-11
+// JavaScript enum
+// Direction 객체는 불변 객체이며 프로퍼티는 유일무이한 값이다.
+const Direction = Object.freeze({
+  UP: Symbol('up'),
+  DOWN: Symbol('down'),
+  LEFT: Symbol('left'),
+  RIGHT: Symbol('right')
+});
+
+const myDirection = Direction.UP;
+
+if (myDirection === Direction.UP) {
+  console.log('You are going UP.');
 }
-32-13
-const str = 'Hello world';
+33-12
+const obj = {
+  // 심벌 값으로 프로퍼티 키를 생성
+  [Symbol.for('mySymbol')]: 1
+};
 
-// 문자열 str에서 정규 표현식과 매치하는 문자열을 검색하여 일치하는 문자열의 인덱스를 반환한다.
-str.search(/o/); // -> 4
-str.search(/x/); // -> -1
-32-14
-const str = 'Hello world';
+obj[Symbol.for('mySymbol')]; // -> 1
+33-13
+const obj = {
+  // 심벌 값으로 프로퍼티 키를 생성
+  [Symbol('mySymbol')]: 1
+};
 
-str.includes('Hello'); // -> true
-str.includes('');      // -> true
-str.includes('x');     // -> false
-str.includes();        // -> false
-32-15
-const str = 'Hello world';
-
-// 문자열 str의 인덱스 3부터 'l'이 포함되어 있는지 확인
-str.includes('l', 3); // -> true
-str.includes('H', 3); // -> false
-32-16
-const str = 'Hello world';
-
-// 문자열 str이 'He'로 시작하는지 확인
-str.startsWith('He'); // -> true
-// 문자열 str이 'x'로 시작하는지 확인
-str.startsWith('x'); // -> false
-32-17
-// 문자열 str의 인덱스 5부터 시작하는 문자열이 ' '로 시작하는지 확인
-str.startsWith(' ', 5); // -> true
-32-18
-const str = 'Hello world';
-
-// 문자열 str이 'ld'로 끝나는지 확인
-str.endsWith('ld'); // -> true
-// 문자열 str이 'x'로 끝나는지 확인
-str.endsWith('x'); // -> false
-32-19
-// 문자열 str의 처음부터 5자리까지('Hello')가 'lo'로 끝나는지 확인
-str.endsWith('lo', 5); // -> true
-32-20
-const str = 'Hello';
-
-for (let i = 0; i < str.length; i++) {
-  console.log(str.charAt(i)); // H e l l o
-}
-32-21
-// 인덱스가 문자열의 범위(0 ~ str.length-1)를 벗어난 경우 빈문자열을 반환한다.
-str.charAt(5); // -> ''
-32-22
-const str = 'Hello World';
-
-// 인덱스 1부터 인덱스 4 이전까지의 부분 문자열을 반환한다.
-str.substring(1, 4); // -> ell
-32-23
-const str = 'Hello World';
-
-// 인덱스 1부터 마지막 문자까지 부분 문자열을 반환한다.
-str.substring(1); // -> 'ello World'
-32-24
-const str = 'Hello World'; // str.length == 11
-
-// 첫 번째 인수 > 두 번째 인수인 경우 두 인수는 교환된다.
-str.substring(4, 1); // -> 'ell'
-
-// 인수 < 0 또는 NaN인 경우 0으로 취급된다.
-str.substring(-2); // -> 'Hello World'
-
-// 인수 > 문자열의 길이(str.length)인 경우 인수는 문자열의 길이(str.length)으로 취급된다.
-str.substring(1, 100); // -> 'ello World'
-str.substring(20); // -> ''
-32-25
-const str = 'Hello World';
-
-// 스페이스를 기준으로 앞에 있는 부분 문자열 취득
-str.substring(0, str.indexOf(' ')); // -> 'Hello'
-
-// 스페이스를 기준으로 뒤에 있는 부분 문자열 취득
-str.substring(str.indexOf(' ') + 1, str.length); // -> 'World'
-32-26
-const str = 'hello world';
-
-// substring과 slice 메서드는 동일하게 동작한다.
-// 0번째부터 5번째 이전 문자까지 잘라내어 반환
-str.substring(0, 5); // -> 'hello'
-str.slice(0, 5); // -> 'hello'
-
-// 인덱스가 2인 문자부터 마지막 문자까지 잘라내어 반환
-str.substring(2); // -> 'llo world'
-str.slice(2); // -> 'llo world'
-
-// 인수 < 0 또는 NaN인 경우 0으로 취급된다.
-str.substring(-5); // -> 'hello world'
-// slice 메서드는 음수인 인수를 전달할 수 있다. 뒤에서 5자리를 잘라내어 반환한다.
-str.slice(-5); // ⟶ 'world'
-32-27
-const str = 'Hello World!';
-
-str.toUpperCase(); // -> 'HELLO WORLD!'
-32-28
-const str = 'Hello World!';
-
-str.toLowerCase(); // -> 'hello world!'
-32-29
-const str = '   foo  ';
-
-str.trim(); // -> 'foo'
-32-30
-const str = '   foo  ';
-
-// String.prototype.{trimStart,trimEnd} : Proposal stage 4
-str.trimStart(); // -> 'foo  '
-str.trimEnd();   // -> '   foo'
-32-31
-const str = '   foo  ';
-
-// 첫 번째 인수로 전달한 정규 표현식에 매치하는 문자열을 두 번째 인수로 전달한 문자열로 치환한다.
-str.replace(/\s/g, '');   // -> 'foo'
-str.replace(/^\s+/g, ''); // -> 'foo  '
-str.replace(/\s+$/g, ''); // -> '   foo'
-32-32
-const str = 'abc';
-
-str.repeat();    // -> ''
-str.repeat(0);   // -> ''
-str.repeat(1);   // -> 'abc'
-str.repeat(2);   // -> 'abcabc'
-str.repeat(2.5); // -> 'abcabc' (2.5 → 2)
-str.repeat(-1);  // -> RangeError: Invalid count value
-32-33
-const str = 'Hello world';
-
-// str에서 첫 번째 인수 'world'를 검색하여 두 번째 인수 'Lee'로 치환한다.
-str.replace('world', 'Lee'); // -> 'Hello Lee'
-32-34
-const str = 'Hello world world';
-
-str.replace('world', 'Lee'); // -> 'Hello Lee world'
-32-35
-const str = 'Hello world';
-
-// 특수한 교체 패턴을 사용할 수 있다. ($& => 검색된 문자열)
-str.replace('world', '<strong>$&</strong>');
-32-36
-const str = 'Hello Hello';
-
-// 'hello'를 대소문자를 구별하지 않고 전역 검색한다.
-str.replace(/hello/gi, 'Lee'); // -> 'Lee Lee'
-32-37
-// 카멜 케이스를 스네이크 케이스로 변환하는 함수
-function camelToSnake(camelCase) {
-  // /.[A-Z]/g는 임의의 한 문자와 대문자로 이루어진 문자열에 매치한다.
-  // 치환 함수의 인수로 매치 결과가 전달되고, 치환 함수가 반환한 결과와 매치 결과를 치환한다.
-  return camelCase.replace(/.[A-Z]/g, match => {
-    console.log(match); // 'oW'
-    return match[0] + '_' + match[1].toLowerCase();
-  });
+for (const key in obj) {
+  console.log(key); // 아무것도 출력되지 않는다.
 }
 
-const camelCase = 'helloWorld';
-camelToSnake(camelCase); // -> 'hello_world'
+console.log(Object.keys(obj)); // []
+console.log(Object.getOwnPropertyNames(obj)); // []
+33-14
+const obj = {
+  // 심벌 값으로 프로퍼티 키를 생성
+  [Symbol('mySymbol')]: 1
+};
 
-// 스네이크 케이스를 카멜 케이스로 변환하는 함수
-function snakeToCamel(snakeCase) {
-  // /_[a-z]/g는 _와 소문자로 이루어진 문자열에 매치한다.
-  // 치환 함수의 인수로 매치 결과가 전달되고, 치환 함수가 반환한 결과와 매치 결과를 치환한다.
-  return snakeCase.replace(/_[a-z]]/g, match => {
-    console.log(match); // '_w'
-    return match[1].toUpperCase();
-  });
+// getOwnPropertySymbols 메서드는 인수로 전달한 객체의 심벌 프로퍼티 키를 배열로 반환한다.
+console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(mySymbol)]
+
+// getOwnPropertySymbols 메서드로 심벌 값도 찾을 수 있다.
+const symbolKey1 = Object.getOwnPropertySymbols(obj)[0];
+console.log(obj[symbolKey1]); // 1
+33-15
+// 표준 빌트인 객체를 확장하는 것은 권장하지 않는다.
+Array.prototype.sum = function () {
+  return this.reduce((acc, cur) => acc + cur, 0);
+};
+
+[1, 2].sum(); // -> 3
+33-16
+// 심벌 값으로 프로퍼티 키를 동적 생성하면 다른 프로퍼티 키와 절대 충돌하지 않아 안전하다.
+Array.prototype[Symbol.for('sum')] = function () {
+  return this.reduce((acc, cur) => acc + cur, 0);
+};
+
+[1, 2][Symbol.for('sum')](); // -> 3
+33-17
+// 1 ~ 5 범위의 정수로 이루어진 이터러블
+const iterable = {
+  // Symbol.iterator 메서드를 구현하여 이터러블 프로토콜을 준수
+  [Symbol.iterator]() {
+    let cur = 1;
+    const max = 5;
+    // Symbol.iterator 메서드는 next 메서드를 소유한 이터레이터를 반환
+    return {
+      next() {
+        return { value: cur++, done: cur > max + 1 };
+      }
+    };
+  }
+};
+
+for (const num of iterable) {
+  console.log(num); // 1 2 3 4 5
 }
-
-const snakeCase = 'hello_world';
-snakeToCamel(snakeCase); // -> 'helloWorld'
-32-38
-const str = 'How are you doing?';
-
-// 공백으로 구분(단어로 구분)하여 배열로 반환한다.
-str.split(' '); // -> ["How", "are", "you", "doing?"]
-
-// \s는 여러 가지 공백 문자(스페이스, 탭 등)를 의미한다. 즉, [\t\r\n\v\f]와 같은 의미다.
-str.split(/\s/); // -> ["How", "are", "you", "doing?"]
-
-// 인수로 빈 문자열을 전달하면 각 문자를 모두 분리한다.
-str.split(''); // -> ["H", "o", "w", " ", "a", "r", "e", " ", "y", "o", "u", " ", "d", "o", "i", "n", "g", "?"]
-
-// 인수를 생략하면 대상 문자열 전체를 단일 요소로 하는 배열을 반환한다.
-str.split(); // -> ["How are you doing?"]
-32-39
-// 공백으로 구분하여 배열로 반환한다. 단, 배열의 길이는 3이다
-str.split(' ', 3); // -> ["How", "are", "you"]
-32-40
-// 인수로 전달받은 문자열을 역순으로 뒤집는다.
-function reverseString(str) {
-  return str.split('').reverse().join('');
-}
-
-reverseString('Hello world!'); // -> '!dlrow olleH'

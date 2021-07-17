@@ -315,3 +315,153 @@ NodeList
 
 - Node.prototype.removeChild(child) 메서드는 child 매개변수에 인수로 전달한 노드를 DOM에서 삭제한다.
 - 인수로 전달한 노드는 removeChild메서드를 호출한 노드의 자식 노드이어야한다.
+
+---
+
+## 39.7 어트리뷰트
+
+### 39.7.1 어트리뷰트 노드와 attributes 프로퍼티
+
+- HTML 문서의 구성 요소인 HTML 요소는 여러개의 어트리뷰트를 가질 수 있다.
+- HTML 문서가 파싱될 때 HTML 요소의 어트리뷰트는 어트리뷰트 노드로 변환되어 요소 노드와 연결된다. 이때 HTML 어트리뷰트당 하나의 어트리뷰트 노드가 생성된다.
+- 이때 모든 어트리뷰트 노드의 참조는 유사 배열 객체이사 이터러블인 NamedNodeMap 객체에 담겨서 요소 노드의 attributes 프로퍼티에 저장된다.
+- 요소노드의 모든 어트리뷰트 노드는 요소 노드의 Element.prototype.attributes 프로퍼티로 취득할 수 있다.
+- attributes 프로퍼티는 getter만 존재하는 일기 전용 접근자 프로퍼티이며, 요소 노드의 모든 어트리뷰트 노드의 참조가 담긴 NamedNodeMap 객체를 반환한다.
+
+### 39.7.2 HTML 어트리뷰트 조작
+
+- Element.prototype.getAttribute /setAttribute 메서드를 사용하면 attributes 프로퍼티를 통하지 않고 요소 노드에서 메서드를 통해 직접 HTML 어트리뷰트 값을 취득하거나 변경할 수 있어 편리하다.
+- HTML 어트리뷰트 값을 참조하려면 Element.prototype.getAttribute(attributeName) 메서드를 , 변경하려면 Element.prototype.setAttribute(attributeName, attributeValue)메서드를 사용한다.
+- 특정 HTML 어트리뷰트가 존재하는지 확인하려면 Element.prototype.hasAttribute(attributeName) 메서드를 사용한다.
+- 특정 HTML 어트리뷰트를 삭제하려면 Element.prototype.removeAttribute(attributeName)메서드를 사용한다.
+
+        hasAttribute(attribute)
+        - 지정한 어트리뷰트를 가지고 있는지 검사한다.
+        - Return : Boolean
+        - IE8 이상의 브라우저에서 동작한다.
+
+        getAttribute(attribute)
+        - 어트리뷰트의 값을 취득한다.
+        - Return : 문자열
+        - 모든 브라우저에서 동작한다.
+
+        setAttribute(attribute, value)
+        - 어트리뷰트와 어트리뷰트 값을 설정한다.
+        - Return : undefined
+        - 모든 브라우저에서 동작한다.
+
+        removeAttribute(attribute)
+        - 지정한 어트리뷰트를 제거한다.
+        - Return : undefined
+        - 모든 브라우저에서 동작한다.
+
+### 39.7.3 HTML 어트리뷰트 vs DOM 프로퍼티
+
+- 요소 노드 객체에는 HTML 어트리뷰트에 대응하는 프로퍼티가 존재한다. 이 DOM 프로퍼티들은 HTML 어트리뷰트 값을 초기값으로 가지고 있다.
+- DOM 프로퍼티는 setter과 getter 모두 존재하는 접근자 프로퍼티다. 따라서 참조와 변경이 가능하다.
+- HTML 어트리뷰트의 역할은 HTML 요소의 초기 상태를 지정하는 것이다. 즉, HTML 어트리뷰트 값은 HTML 요소의 초기 상태를 의미하며 이는 변하지 않는다.
+- 요소 노드는 2개 의 상태, 즉 초기 상태와 최신 상태를 관리해야 한다. 요소 노드의 초기 상태는 어트리뷰트 노드가 관리하며, 요소노드의 최신상태는 DOM프로퍼티가 관리한다.
+
+> 어트리뷰트 노드
+
+- HTML 어트리뷰트로 지정한 HTML 요소의 초기상 태는 어트리뷰트 노드에서 관리한다.
+- getAttribute 메서드로 취득한 값은 초기 상태 값이다. HTML 요소에 지정한 어트리뷰트 값은 사용자의 입력에 의해 변하지 않으므로 결과는 언제나 동일하다.
+- setAttribute메서드는 어트리뷰트 노드에서 관리하는 HTML 요소에 지정한 어트리뷰트 값, 즉 초기 상태 값을 변경한다.
+
+> DOM 프로퍼티
+
+- 사용자가 입력한 최신 상태는 HTML 어트리뷰트에 대응하는 요소 노드의 DOM 프로퍼티가 관리한다.
+- DOM 프로퍼티는 사용자의 입력에 의한 생태 변화에 반응하여 언제나 최신 상태를 유지한다.
+- DOM 프로퍼티로 취득한 값은 HTML 요소의 최신 상태 값을 의미한다.
+- DOM 프로퍼티에 값을 할당하는 것은 HTML 요소의 최신 상태 값을 변경하는 것을 의미한다. 이때 HTML 요소에 지정한 어트리뷰트 값에는 어떠한 영향도 주지 않는다.
+
+> HTML 어트리뷰트와 DOM 프로퍼티의 대응관계
+
+- 대부분의 HTML 어트리뷰트는 HTML 어트리뷰트 이름과 동일한 DOM 프로퍼티와 1:1로 대응한다.
+- 단 언제나 1:1로 대응하는 것은 아니며, HTML 어트리뷰트 이름과 동일한 DOM 프로퍼티 키가 반드시 일치하는 것도 아니다.
+
+  - id어드리뷰트와 id프로퍼티는 1:1 대응하며, 동일한 값으로 연동한다.
+  - input 요소의 value 어트리뷰트는 value 프로퍼티와 1:1 대응한다. 하지만 value 어트리뷰트는 초기상태를, value 프로퍼티는 최신 상태를 갖는다.
+  - class 어트리뷰트는 className, classList 프로퍼티와 대응한다.
+  - for어트리뷰트는 htmlFor 프로퍼티와 1:1데응한다.
+  - td 요소의 colspan 어트리뷰트는 대응하는 프로퍼티가 존재하지 않는다.
+  - textContent 프로퍼티는 대응하는 어트리뷰트가 존재하지 않는다.
+  - 어트리뷰트 이름은 대소문자를 구별하지 않지만 대응하는 프로퍼티 키는 카멜 케이스를 따른다.
+
+> DOM 프로퍼티 값의 타입
+
+- getAttribute 메서드로 취득한 어트리뷰트 값은 언제나 문자열이다. 하지만 DOM 프로퍼티로 취득한 최신 상태 값은 문자열이 아닐 수도 있다.
+
+### 39.7.4 data 어트리뷰트와 dataset 프로퍼티
+
+- data 어트리뷰트와 dataset 프로퍼티를 사용하면 HTML 요소에 정의한 사용자 정의 어트리뷰트와 자바스크립트 간에 데이터를 교환할 수 있다.
+- data 어트리뷰트는 data- user- id, data- role과 같이 data- 접두사 다음에 임의의 이름을 붙여 사용한다.
+- data 어트리뷰트의 값은 HTMLElement.dataset 프로퍼티로 취득할 수 있다.
+- dataset 프로퍼티는 HTML 요소의 모든 data 어트리뷰트의 정보를 제공하는 DOMStringMap 객체를 반환한다.
+- DOMStringMap 객체는 data어트리뷰트의 data- 접두사 다음에 붙인 임의의 이름을 카멜 케이스로 변환한 프로퍼티를 가지고 있다. 이 프로퍼티로 data 어트리뷰트의 값을 취득하거나 변경할 수 있다.
+- data어트리뷰트의 data- 접두사 다음에 존재하지 않는 이름을 키로 사용하여 dataset 프로퍼티에 값을 할당하면 HTML 요소에 data 어트리뷰트가 추가된다. 이때 이 프로퍼티 키는 data 어트리뷰트의 data- 접두사 다음에 케밥케이스로 자동 변경되어 추가된다.
+
+---
+
+## 39.8 스타일
+
+### 39.8.1 인라인 스타일 조작
+
+- HTMLElement.prototype.style 프로퍼티는 setter와 getter 모두 존재하는 접근자 프로퍼티로서 요소 노드의 인라인 스타일을 취득하거나 추가 또는 변경한다.
+- style 프로퍼티를 참조하면 CSSStyleDeclaration 타입의 객체를 반환한다.
+- CSSStyleDeclaration 객체는 다양한 CSS 프로퍼티에 대응하는 프로퍼티를 가지고 있으며, 이 프로퍼티에 값을 할당하면 해당 CSSS 프로퍼티가 인라인 스타일로 HTML 요소에 추가되거나 변경된다.
+- CSS 프로퍼티는 케밥 케이스를 따른다. 이에 대응하는 CSSStyleDeclaration 객체의 프로퍼티는 카멜 케이스를 따른다.
+
+### 39.8.2 클래스 조작
+
+- .으로 시작하는 클래스 선택자를 사용하여 CSS class를 미리 정의한 다음, HTML 요소의 class 어트리뷰트 값을 변경하여 HTML 요소의 스타일을 변경할 수도 있다.
+- 단, class 어트리뷰트에 대응하는 DOM 프로퍼티는 class가 아니라 className, classList다. 자바스크립트에서 class는 예약어이기 때문이다.
+
+> className
+
+- HTMLElement.prototype.className 프로퍼티는 setter와 getter 모두 존재하는 접근자 프로퍼티로서 HTML 요소의 class 어트리뷰트 값을 취득하거나 변경한다.
+- 요소 노드의 className 프로퍼티를 참조하면 class 어트리뷰트 값을 문자열로 반환하고, 요소 노드의 className프로퍼티에 문자열을 할당하면 class 어트리뷰트 값을 할당한 문자열로 변경한다.
+- className프로퍼티는 문자열을 반환하므로 공백으로 구분된 여러 개의 클래스를 반환하는 경우 다루기가 불편하다.
+
+> classList
+
+- HTMLElement.prototype.classList 프로퍼티는 class 어트리뷰트의 정보를 담는 DOMTokenList 객체를 반환한다.
+- DOMTokenList 객체는 class어트리뷰트의 정보를 나타내는 컬렉션 객체로서 유사 배열 객체이면서 이터러블이다.
+
+> DOMTokenList 객체는 다음과 같은 유용한 메서드들을 제공한다.
+
+    add(...className)
+    - add 메서드는 인수로 전달한 1개 이상의 문자열을 class 어트리뷰트 값으로 추가한다.
+
+    remove(...className)
+    - remove 메서드는 인수로 전달한 1개 이상의 문자열과 일치하는 클래스를 class어트리뷰트에서 삭제한다.
+    - 인수로 전달된 문자열과 일치하는 클래스가 class 어트리뷰트에 없으면 에러 없이 무시된다.
+
+    item(index)
+    - item 메서드는 인수로 전달한 index에 해당하는 클래스를 class 어트리뷰트에서 반환한
+
+    contains(...className)
+    - contains 메서드는 인수로 전달한 문자열과 일치하는 클래스가 class 어트리뷰트에 포함되어 있는지 확인한다. 불리언값으로 반환한다.
+
+    replace(oldClassName, newClassName)
+    - replace 메서드는 class 어트리뷰트에서 첫 번째 인수로 전달한 문자열을 두번째 인수로 전달한 문자열로 변경한다.
+
+    toggle(className[, force])
+    - toggle 메서드는 class 어트리뷰트에 인수로 전달한 문자열과 일치하는 클래스가 존재하면 제거하고 존재하지 않으면 추가한다.
+    - 두 번째 인수로 불리언 값으로 평가되는 조건식을 전달할 수 있다. 평가 결과가 true이면 class 어트리뷰트에 강제로 전달받은 첫번째 인수인 문자열을 추가하고, false이면 제거한다.
+
+- 이밖에도 DOMTokenList 객체는 forEach, entries, keys, values, supports 메서드를 제공한다.
+
+### 39.8.3 요소에 적용되어 있는 CSS 스타일 참조
+
+- style 프로퍼티는 인라인 스타일만 반환한다. 따라서 클래스를 적용한 스타일이나 상속을 통해 암묵적으로 적용된 스타일은 style 프로퍼티로 참조할 수 없다.
+- HTML 요소에 적용되어 있는 모든 CSS 스타일을 참조해야 할 경우 getComputedStyle 메서드를 사용한다.
+- window.getComputedStyle(element[, pseudo]) 메서드는 첫 번째 인수로 전달한 요소 노드에 적용되어 있는 평가된 스타일을 CSSStyleDeclaration 객체에 담아 반환한다.
+- 평가된 스타일이란 링크 스타일, 임베딩 스타일, 인라인 스타일, JS에서 적용한 스타일, 상속된 스타일, 기본 스타일 등 모든 스타일이 조합되어 최종적으로 적용된 스타일을 말한다.
+- getComputedStyle 메서드의 두 번째 인수로 :after , :before와 같은 의사 요소를 지정하는 문자열을 전달할 수 있다. 의사 요소가 아니면 생략된다.
+
+---
+
+### 39.9 DOM 표준
+
+- HTML과 DOM 표준은 W3C과 WHATWG이라는 두 단체가 나름대로 협력하면서 공통된 표준을 만들어 왔다.

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <body>
-  <input type="text" />
-  <em class="message"></em>
+  <button class="btn">Click me</button>
   <script>
-    const $input = document.querySelector('input[type=text]');
-    const $msg = document.querySelector('.message');
+    const $button = document.querySelector('.btn');
 
-    $input.onkeyup = e => {
-      // e.key는 입력한 키 값을 문자열로 반환한다.
-      // 입력한 키가 'Enter', 즉 엔터 키가 아니면 무시한다.
-      if (e.key !== 'Enter') return;
+    // 버튼 요소에 click 커스텀 이벤트 핸들러를 등록
+    // 커스텀 이벤트를 디스패치하기 이전에 이벤트 핸들러를 등록해야 한다.
+    $button.addEventListener('click', e => {
+      console.log(e); // MouseEvent {isTrusted: false, screenX: 0, ...}
+      alert(`${e} Clicked!`);
+    });
 
-      // 엔터키가 입력되면 현재까지 입력 필드에 입력된 값을 출력한다.
-      $msg.textContent = e.target.value;
-      e.target.value = '';
-    };
+    // 커스텀 이벤트 생성
+    const customEvent = new CustomEvent('click');
+
+    // 커스텀 이벤트 디스패치(동기 처리). click 이벤트가 발생한다.
+    $button.dispatchEvent(customEvent);
   </script>
 </body>
+
 </html>
